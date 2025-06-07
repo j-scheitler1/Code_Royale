@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer utilities {
+  .text-brand {
+    @apply text-[#D1D5DB] font-hacker text-2xl; /* Example: violet-500 */
+  }
+  .text-brand-header {
+    @apply text-[#D1D5DB] font-hacker text-4xl; /* Example: violet-500 */
+  }
+  .bg-brand {
+    @apply bg-[#48494b];
+  }
+  .bg-brand-secondary {
+    @apply bg-[#3B3C3E];
+  }
+  .autofill-fix:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #48494b inset !important;
+    -webkit-text-fill-color: #D1D5DB !important;
+    font-family: 'VT323', monospace !important;
+    caret-color: #D1D5DB !important;
+  }
+}
