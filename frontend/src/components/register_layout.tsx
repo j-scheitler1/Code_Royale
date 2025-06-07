@@ -1,26 +1,26 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login_Layout: React.FC = () => {
+const Register_Layout: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ email, password}),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert('Login successful!');
+        alert('Registration successful!');
         navigate('/dashboard');
       } else {
-        alert(`Login failed: ${data.error}`);
+        alert(`Registration failed: ${data.error}`);
       }
     } catch (error) {
       alert('Something went wrong.' + error);
@@ -28,7 +28,7 @@ const Login_Layout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-brand text-brand flex items-start justify-start p-4 text-lg">
+    <div className="min-h-screen bg-brand text-brand flex items-start justify-start p-4 font-hacker text-lg">
       <div className="flex flex-col gap-2">
         <input 
           type="email"
@@ -45,14 +45,14 @@ const Login_Layout: React.FC = () => {
           className="bg-transparent border-none outline-none placeholder-gray-400 text-brand autofill-fix"
         />
         <button 
-          onClick={handleLogin}
+          onClick={handleRegister}
           className="self-start hover:font-bold hover:scale-105 transition"
         >
-          Login
+          Register
         </button>
       </div>
     </div>
   );
 };
 
-export default Login_Layout;
+export default Register_Layout;

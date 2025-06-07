@@ -1,7 +1,10 @@
+import React from 'react';
+
 const Design: React.FC = () => {
   return (
-    <div className="text-black-500 text-center font-mono whitespace-pre mt-10 text-sm sm:text-base">
-      <pre>
+    <div className="text-brand text-center font-mono whitespace-pre mt-10 text-xl sm:text-base select-none">
+      <div className="inline-block transition duration-300 hover:scale-125 hover:font-bold">
+        <pre>
 {String.raw`
                 .     '     ,
         ___________
@@ -17,7 +20,8 @@ const Design: React.FC = () => {
      /___________________\
      |_____________________|
 `}
-      </pre>
+        </pre>
+      </div>
     </div>
   );
 };
