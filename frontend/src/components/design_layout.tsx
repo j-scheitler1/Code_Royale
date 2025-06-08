@@ -6,12 +6,12 @@ const Design: React.FC = () => {
       <div className="inline-block transition duration-300 hover:scale-125 hover:font-bold">
         <pre>
 {String.raw`
-       .     '     ,
-       ___________
-       /_|_________|_\
-       '. \   / .'
-       '.\ /.'
-       __|| " ||__
+      .     '     ,
+      ___________
+      /_|_________|_\
+      '. \   / .'
+      '.\ /.'
+      __|| " ||__
       |~|~|~|~|~|~|~|
       | | | | | | | |
       |_|_|_|_|_|_|_|
