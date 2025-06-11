@@ -5,6 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
 }
 
 model User {
@@ -12,4 +13,20 @@ model User {
   email     String  @unique
   password  String
   createdAt DateTime @default(now())
+}
+
+model Problem {
+  id          Int @id @default(autoincrement())
+  title       String @unique
+  description String 
+  difficulty  String
+  testCases   TestCase[]
+}
+
+model TestCase {
+  id        Int @id @default(autoincrement())
+  problem   Problem @relation(fields: [problemId], references: [id])
+  problemId Int
+  input     String
+  output    String
 }
