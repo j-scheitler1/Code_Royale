@@ -5,6 +5,7 @@ import Login from './Login'
 import About from './About'; // updated import
 import Register from './Register'; // updated import
 import Dashboard from './Dashboard';
+import Editor from './Editor'; // updated import
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/editor" element={<Editor />} />
         {/* Add more routes as needed */}
       </Routes>
     </>
