@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginController, registerController } from './controller';
+import { loginController, registerController } from '../auth/controller';
 
 // Define the route and connects it to the logic / controller
 
