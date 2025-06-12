@@ -5,9 +5,9 @@ import { LoginRequest } from './types';
 // import { RegisterRequest } from './types';
 
 // Business Logic - Talks to DB and Checks Credentials
-const prisma = new PrismaClient();
 
 export async function verifyLogin(username: string, password: string) {
+  const prisma = new PrismaClient();
   const user = await prisma.user.findUnique({ where: { email: username } });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -22,6 +22,7 @@ export async function verifyLogin(username: string, password: string) {
 }
 
 export async function verifyRegister(username: string, password: string) {
+  const prisma = new PrismaClient();
   const existingUser = await prisma.user.findUnique({ where: { email: username } });
 
   if (existingUser) {
