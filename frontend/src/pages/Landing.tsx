@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from './components/header_layout';
-import Design from './components/design_layout';
+import Header from '../components/header_layout';
+import Design from '../components/design_layout';
 // import ReactDOM from 'react-dom/client';
 
 function Landing() {

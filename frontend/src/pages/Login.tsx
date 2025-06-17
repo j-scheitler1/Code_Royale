@@ -1,8 +1,8 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 
-import Header from './components/header_layout';
-import Login_Layout from './components/login_layout';
+import Header from '../components/header_layout';
+import Login_Layout from '../components/login_layout';
 
 const Login: React.FC = () => {
   return (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Landing from './Landing'; // updated import
-import Login from './Login'
-import About from './About'; // updated import
-import Register from './Register'; // updated import
-import Dashboard from './Dashboard';
+import Landing from './pages/Landing'; // updated import
+import Login from './pages/Login'
+import About from './pages/About'; // updated import
+import Register from './pages/Register'; // updated import
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (

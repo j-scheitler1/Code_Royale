@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from './components/header_layout';
-import Register_Layout from './components/register_layout';
+import Header from '../components/header_layout';
+import Register_Layout from '../components/register_layout';
 
 const Register: React.FC = () => {
   return (
