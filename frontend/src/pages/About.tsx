@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './components/header_layout';
+import Header from '../components/header_layout';
 
 function About() {
   return (
