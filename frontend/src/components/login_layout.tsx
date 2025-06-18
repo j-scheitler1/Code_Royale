@@ -1,30 +1,51 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase/firebase';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 const Login_Layout: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [formError, setFormError] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ email, password}),
-      });
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    firebaseError,
+  ] = useSignInWithEmailAndPassword(auth);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert('Login successful!');
-        navigate('/dashboard');
-      } else {
-        alert(`Login failed: ${data.error}`);
-      }
-    } catch (error) {
-      alert('Something went wrong.' + error);
+  React.useEffect(() => {
+    if (user) {
+      setFormError(null);
+      navigate('/dashboard');
     }
+  }, [user, navigate]);
+
+  React.useEffect(() => {
+    if (firebaseError) {
+      if (firebaseError.code === 'auth/user-not-found') {
+        setFormError('No user found with this email.');
+      } else if (firebaseError.code === 'auth/wrong-password') {
+        setFormError('Incorrect password. Please try again.');
+      } else if (firebaseError.code === 'auth/invalid-email') {
+        setFormError('Invalid email format.');
+      } else {
+        setFormError('Login failed. Please try again.');
+      }
+    }
+  }, [firebaseError]);
+
+  const handleLogin = () => {
+
+    if (!email || !password) {
+      setFormError('Please enter both email and password.');
+      return;
+    }
+    setPersistence(auth, browserLocalPersistence)
+    signInWithEmailAndPassword(email, password);
   };
 
   return (
@@ -50,6 +71,13 @@ const Login_Layout: React.FC = () => {
         >
           Login
         </button>
+
+        {loading && <p className="text-sm mt-2">Logging in...</p>}
+        {formError && (
+          <p className="text-red-400 text-sm mt-2">
+            Error: {formError}
+          </p>
+        )}
       </div>
     </div>
   );

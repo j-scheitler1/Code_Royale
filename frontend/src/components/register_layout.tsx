@@ -1,30 +1,49 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase/firebase';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 const Register_Layout: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [formError, setFormError] = React.useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
-    try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    firebaseError,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert('Registration successful!');
-        navigate('/dashboard');
-      } else {
-        alert(`Registration failed: ${data.error}`);
-      }
-    } catch (error) {
-      alert('Something went wrong.' + error);
+  React.useEffect(() => {
+    if (user) {
+      setFormError(null);
+      navigate('/dashboard');
     }
+  }, [user, navigate]);
+
+  React.useEffect(() => {
+    if (firebaseError) {
+      if (firebaseError.code === 'auth/email-already-in-use') {
+        setFormError('Email already in use. Please try a different email.');
+      } else if (firebaseError.code === 'auth/invalid-email') {
+        setFormError('Invalid email format.');
+      } else if (firebaseError.code === 'auth/weak-password') {
+        setFormError('Password should be at least 6 characters.');
+      } else {
+        setFormError('Something went wrong. Please try again.');
+      }
+    }
+  }, [firebaseError]);
+
+  const handleRegister = () => {
+    if (!email || !password) {
+      setFormError('Please enter both email and password.');
+      return;
+    }
+
+    createUserWithEmailAndPassword(email, password);
   };
 
   return (
@@ -50,6 +69,13 @@ const Register_Layout: React.FC = () => {
         >
           Register
         </button>
+
+        {loading && <p className="text-sm mt-2">Registering...</p>}
+        {formError && (
+          <p className="text-red-400 text-sm mt-2">
+            Error: {formError}
+          </p>
+        )}
       </div>
     </div>
   );
