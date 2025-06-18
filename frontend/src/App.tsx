@@ -5,8 +5,14 @@ import Login from './pages/Login'
 import About from './pages/About'; // updated import
 import Register from './pages/Register'; // updated import
 import Dashboard from './pages/Dashboard';
+import { useAuth } from './pages/auth';
+import Loading from './pages/Loading';
 
 const App = () => {
+  const { loading } = useAuth();
+
+  if (loading) return <Loading></Loading>;
+
   return (
     <>
       <Routes>
