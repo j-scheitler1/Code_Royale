@@ -1,5 +1,3 @@
-// src/auth/RequireAuth.tsx
-
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./index";
 import type { JSX } from "react/jsx-runtime";

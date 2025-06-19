@@ -1,12 +1,13 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing'; // updated import
-import Login from './pages/Login'
-import About from './pages/About'; // updated import
-import Register from './pages/Register'; // updated import
-import Dashboard from './pages/Dashboard';
-import { useAuth } from './pages/auth';
-import Loading from './pages/Loading';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing"; // updated import
+import Login from "./pages/Login";
+import About from "./pages/About"; // updated import
+import Register from "./pages/Register"; // updated import
+import Dashboard from "./pages/Dashboard";
+import { useAuth } from "./pages/auth";
+import Loading from "./pages/Loading";
+import { RequireAuth } from "./pages/auth/RequireAuth";
 
 const App = () => {
   const { loading } = useAuth();
@@ -20,7 +21,15 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+
         {/* Add more routes as needed */}
       </Routes>
     </>
