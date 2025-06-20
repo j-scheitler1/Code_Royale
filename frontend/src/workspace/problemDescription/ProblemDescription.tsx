@@ -30,8 +30,8 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = () => {
         </div>
 
         {/* EXAMPLE */}
-        <div className='w-full flex justify-center mt-4'>
-          <div className='max-w-xl w-full bg-brand rounded-lg p-4 shadow'>
+        <div className='w-full flex justify-left px-4 mt-4'>
+          <div className='w-full bg-brand rounded-lg p-4 shadow'>
             <h2 className="text-brand-secondary-header">Example 1:</h2>
             <p className="text-brand-secondary mt-2">
               <code className="bg-brand text-brand-secondary block">Input: nums = [2,7,11,15], target = 9</code>

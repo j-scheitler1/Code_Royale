@@ -6,7 +6,7 @@ type PreferenceNavProps = {};
 const PreferenceNav:React.FC<PreferenceNavProps> = () => {
   
   return (
-    <div className='w-screen'>Have a good coding</div>
+    <div className='h-11 flex flex-col bg-brand'></div>
   )
 }
 export default PreferenceNav;
