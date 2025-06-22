@@ -3,7 +3,7 @@ import Dashboard_Layout from '../components/dashboard_layout';
 import { auth } from '../firebase/firebase';
 
 function Dashboard() {
-  const user = auth.currentUser;
+  const user = auth.currentUser
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-brand text-brand">
