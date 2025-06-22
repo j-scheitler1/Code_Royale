@@ -7,8 +7,14 @@
   .text-brand {
     @apply text-[#D1D5DB] font-hacker text-2xl; /* Example: violet-500 */
   }
+  .text-brand-secondary {
+    @apply text-[#D1D5DB] font-hacker text-xl; /* Example: violet-500 */
+  }
   .text-brand-header {
     @apply text-[#D1D5DB] font-hacker text-4xl; /* Example: violet-500 */
+  }
+  .text-brand-secondary-header {
+    @apply text-[#D1D5DB] font-hacker text-3xl; /* Example: violet-500 */
   }
   .bg-brand {
     @apply bg-[#48494b];
@@ -22,4 +28,25 @@
     font-family: 'VT323', monospace !important;
     caret-color: #D1D5DB !important;
   }
+}
+
+.split {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter {
+    background-color: #48494b;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+    cursor: row-resize;
 }

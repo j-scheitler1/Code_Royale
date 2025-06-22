@@ -1,10 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Landing from "./pages/Landing"; // updated import
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
-import About from "./pages/About"; // updated import
-import Register from "./pages/Register"; // updated import
+import About from "./pages/About"; 
+import Register from "./pages/Register"; 
 import Dashboard from "./pages/Dashboard";
+import WorkSpace from "./pages/WorkSpacePage";
 import { useAuth } from "./pages/auth";
 import Loading from "./pages/Loading";
 import { RequireAuth } from "./pages/auth/RequireAuth";
@@ -29,8 +30,7 @@ const App = () => {
             </RequireAuth>
           }
         />
-
-        {/* Add more routes as needed */}
+        <Route path="/workspace" element={<WorkSpace />} />
       </Routes>
     </>
   );
