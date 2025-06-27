@@ -16,7 +16,7 @@ const Playground:React.FC<PlaygroundProps> = () => {
   <div className="flex flex-col bg-brand">
       <PreferenceNav />
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
-        <div className='w-full overflow-auto'>
+        <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 
             value={initialContent}
             extensions={[javascript()]}

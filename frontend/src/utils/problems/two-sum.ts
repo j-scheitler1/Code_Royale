@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import assert from 'assert';
-import { Problem } from './types/problem';
+import type{ Problem } from './types/problem';
 
 // export type Example = {
 //   id: number;

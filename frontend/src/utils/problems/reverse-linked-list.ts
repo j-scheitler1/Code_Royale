@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-this-alias */
 import assert from "assert";
-import { Problem } from './types/problem';
+import type { Problem } from './types/problem';
+import example from "./images/reverseLL.jpg";
 
-const example = require('./images/reverse-linked-list-example.png');
 
 class LinkedList {
 	value: number;
@@ -87,7 +89,7 @@ export const reverseLinkedList: Problem = {
 			id: 0,
 			inputText: "head = [1,2,3,4,5]",
 			outputText: "[5,4,3,2,1]",
-			img: example.src,
+			img: example,
 		},
 		{
 			id: 1,

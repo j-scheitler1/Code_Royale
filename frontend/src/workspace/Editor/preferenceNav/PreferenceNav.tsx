@@ -5,6 +5,7 @@ type PreferenceNavProps = {};
 
 const PreferenceNav:React.FC<PreferenceNavProps> = () => {
   
+  // ADD CHANGE LANGUAGE FUNCTIONALITY HERE - PROBABLY AN IMPORT THOUGHT
   return (
     <div className='h-11 flex flex-col bg-brand'></div>
   )
