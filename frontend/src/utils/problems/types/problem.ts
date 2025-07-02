@@ -1,3 +1,5 @@
+import type React from "react";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Example = {
   id: number;
@@ -16,6 +18,10 @@ export type Problem = {
   starterCode: string;
   handlerFunction: ((fn: any) => boolean) | string;
   starterFunctionName: string;
+  testCases: {
+    input: string;
+    output: string;
+  }[];
 };
 
 // export type DBProblem = {
