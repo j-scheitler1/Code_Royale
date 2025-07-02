@@ -28,6 +28,9 @@
     font-family: 'VT323', monospace !important;
     caret-color: #D1D5DB !important;
   }
+  .bg-brand-editor {
+    @apply bg-[#282c35]
+  }
 }
 
 .split {
