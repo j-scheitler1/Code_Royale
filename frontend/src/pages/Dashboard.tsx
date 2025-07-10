@@ -1,11 +1,17 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../utils/socket"; 
+import { socket } from "../utils/socket";
+import { useState, useEffect } from "react"; 
 
 function Dashboard() {
   const navigate = useNavigate();
   const user = auth.currentUser;
+  const [showMatchButton, setShowMatchButton] = useState(false);
+
+  useEffect(() => {
+    setShowMatchButton(true);
+  }, []);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -18,6 +24,7 @@ function Dashboard() {
       return;
     }
 
+    setShowMatchButton(false);
     console.log("Jumping into match...");
     const userData = {
       uid: user.uid,
@@ -49,11 +56,18 @@ function Dashboard() {
         <div className="text-xlg font-bold">
           {user ? `Welcome, ${user.email}` : "No user logged in"}
         </div>
-        <div>
-          <button onClick={handleJumpToMatch}>
-            {'{ Jump into a match }'}
-          </button>
-        </div>
+        {showMatchButton && (
+          <div>
+            <button onClick={handleJumpToMatch}>
+              {'{ Jump into a match }'}
+            </button>
+          </div>
+        )}
+        {!showMatchButton && (
+          <div className="text-brand-secondary">
+            Finding a Match...
+          </div> 
+        )}
       </div>
     </div>
   );
