@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { addToQueue, removeFromQueue } from "./queue";
 import { createMatchIfPossible } from "./matchManager";
-import { UserData } from "./types/problem";
+import { UserData } from "../types/problem";
 
 export function registerSocketHandlers(io: Server, socket: Socket) {
   socket.on("join_queue", (userData: UserData) => {

@@ -39,6 +39,16 @@ function Dashboard() {
 
     socket.on("match_found", (match) => {
       alert(`Match found! Match ID: ${match.id}`);
+      console.log("Match found:", match);
+
+      navigate(`/game/${match.matchId}`, {
+        state: {
+          matchId: match.matchId,
+          problem: match.problem,
+          players: [match.opponent],
+        }
+      });
+
     });
 
   }

@@ -1,32 +1,45 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import React from 'react';
 import Split from 'react-split'
 import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
 import { useState } from 'react';
-import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
+import type { StarterCode } from '../../../../backend/src/types/problem';
+import type { TestCase } from '@/utils/problems/types/problem';
+import { javascript } from '@codemirror/lang-javascript';
+// import { python } from '@codemirror/lang-python';
+// import { java } from '@codemirror/lang-java';
+// import { cpp } from '@codemirror/lang-cpp';
+// import { html } from '@codemirror/lang-html';
+// import { Extension } from '@codemirror/state';
+
+/* 
+
+FIGURE OUT THE MAPPING FOR THE LANGUAGE TO THE
+ACTUAL STARTER CODE THAT GETS DISPLAYED ON THE SCREEN
+
+UNCOMMENT THE IMPORTS AND ADD THE OTHER LANGUAGE SUPPORTS
+
+*/
 
 type PlaygroundProps = {
-  starterCode?: string;
-  testCases?: {
-    input: string;
-    output: string;
-  }[];
+  starterCode?: StarterCode[];
+  testCases?: TestCase[];
 };
 
 const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
-  const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); // ✅ Track selected case
+  const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
+  const [languageId, setLanguageId] = useState<number>(71);
 
   const activeTestCase = testCases?.[activeTestCaseIndex];
 
   return (
     <div className="flex flex-col bg-brand">
-      <PreferenceNav />
+      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} />
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 
-            value={starterCode}
+            value={starterCode?.[0].starterCode}
             extensions={[javascript()]}
             className='h-full w-full'
             theme={oneDark}

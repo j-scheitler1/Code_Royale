@@ -1,44 +1,33 @@
-import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
-import { useParams } from "react-router-dom";
-import { db } from "../firebase/firebase"; // adjust if needed
+import React from "react";
+import { useLocation } from "react-router-dom";
 import ProblemPage from "./problem/ProblemPage";
+import type { Problem } from "@/utils/problems/types/problem";
 
-interface GameData {
-  problemId: string;
-  player1: string;
-  player2: string;
-  startedAt?: { toDate: () => Date };
-}
-
-function useGame(gameId: string | undefined) {
-  const [game, setGame] = useState<GameData | null>(null);
-
-  useEffect(() => {
-    if (!gameId) return;
-
-    const unsub = onSnapshot(doc(db, "games", gameId), (docSnap) => {
-      if (docSnap.exists()) {
-        setGame(docSnap.data() as GameData);
-      }
-    });
-
-    return () => unsub();
-  }, [gameId]);
-
-  return game;
+interface MatchState {
+  matchId: string;
+  problem: Problem;
+  players: string[];
 }
 
 const Game: React.FC = () => {
-  const { gameId } = useParams<{ gameId: string }>();
-  const game = useGame(gameId);
+  const location = useLocation();
+  const state = location.state as MatchState | null;
 
-  if (!game) {
-    return <div>Loading game...</div>;
+  if (!state) {
+    return <div>Error: Match state not found.</div>;
   }
 
+  const { matchId, problem, players } = state;
+
   return (
-      <ProblemPage pid={game.problemId}/>    
+    <div>
+      <div>
+        <h2>Match ID: {matchId}</h2>
+        <h3>Players: {players.join(" vs ")}</h3>
+        {problem.title && <h4>Problem: {problem.title}</h4>}
+      </div>
+      <ProblemPage problem={problem} />
+    </div>
   );
 };
 

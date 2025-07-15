@@ -1,4 +1,4 @@
-import { Player } from "./types/problem";
+import { Player } from "../types/problem";
 
 const queue: Player[] = [];
 

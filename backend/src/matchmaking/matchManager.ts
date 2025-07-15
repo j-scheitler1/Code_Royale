@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { getQueue } from "./queue";
-import { getRandomProblem } from "./data/problems";
-import { Match, UserData } from "./types/problem";
+import { getRandomProblem } from "../data/problems";
+import { Match, UserData } from "../types/problem";
 import { Server } from "socket.io";
 
 const matches = new Map<string, Match>();
@@ -14,6 +14,8 @@ export function createMatchIfPossible(io: Server) {
   const player2 = queue.shift()!;
   const problem = getRandomProblem();
   const matchId = uuidv4();
+  
+  console.log(`Creating match ${matchId} between ${player1.userData.username} and ${player2.userData.username}`);
 
   const match: Match = {
     players: [player1.userData, player2.userData],
@@ -23,6 +25,8 @@ export function createMatchIfPossible(io: Server) {
   };
 
   matches.set(matchId, match);
+  
+  console.log(`Match ${matchId} created with problem: ${problem.title}`);
 
   [player1.socket, player2.socket].forEach((socket, i) => {
     socket.join(matchId);

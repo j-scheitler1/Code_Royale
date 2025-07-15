@@ -5,8 +5,8 @@ import Login from "./pages/Login";
 import About from "./pages/About"; 
 import Register from "./pages/Register"; 
 import Dashboard from "./pages/Dashboard";
-import WorkSpace from "./pages/WorkSpacePage";
-import ProblemPage from "./pages/problem/ProblemPage";
+// import ProblemPage from "./pages/problem/ProblemPage";
+import TestProblemPage from "./pages/problem/TestProblemPage";
 import Loading from "./pages/Loading";
 import Game from "./pages/Game";
 import { useAuth } from "./pages/auth";
@@ -33,10 +33,9 @@ const App = () => {
             </RequireAuth>
           }
         />
-        <Route path="/workspace" element={<WorkSpace />} /> 
         {/* ADD AUTH BACK WHEN DONE WITH BRANCH */}
-        <Route path="/problem/:pid" element={<ProblemPage />} />
-        <Route path='/game/:gameId' element={<Game />} />
+        <Route path="/testProblem" element={<TestProblemPage />} />
+        <Route path='/game/:matchId' element={<Game />} />
       </Routes>
     </>
   );

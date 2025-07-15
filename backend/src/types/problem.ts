@@ -12,6 +12,11 @@ export interface TestCase {
   output: string;
 }
 
+export interface StarterCode {
+  languageId: number;
+  starterCode: string;
+}
+
 export interface Problem {
   id: string;
   title: string;
@@ -19,7 +24,7 @@ export interface Problem {
   examples: Example[];
   testCases: TestCase[];
   constraints: string;
-  starterCode: string;
+  starterCode: StarterCode[];
   starterFunctionName: string;
 }
 

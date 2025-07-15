@@ -1,5 +1,36 @@
 import { Problem } from "../types/problem";
 
+/*
+  Format is the following
+  id:
+  title:
+  problemStatement:
+  Examples: [
+    {
+      id:
+      inputText:
+      outputText:
+      explanation:
+    }
+  ]
+  testCases: [
+    {
+      input:
+      output:
+    }
+  ]
+  constraints:
+  starterCode: [
+    {
+      LanguageId:
+      starterCode:
+    }
+  ]
+  starterFunctionName: 
+*/
+
+// Note the StarterCode Needs to include 4 instances
+
 export const problems: Problem[] = [
   {
     id: 'two-sum',
@@ -22,7 +53,24 @@ export const problems: Problem[] = [
       },
     ],
     constraints: 'Each input has exactly one solution.',
-    starterCode: `function twoSum(nums, target) {\n  // Write your code here\n}`,
+    starterCode: [
+      {
+        languageId: 71,
+        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+      },
+      {
+        languageId: 62,
+        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+      },
+      {
+        languageId: 63,
+        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+      },
+      {
+        languageId: 51,
+        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+      },
+    ],
     starterFunctionName: 'function twoSum(',
   },
 ];
@@ -30,3 +78,11 @@ export const problems: Problem[] = [
 export function getRandomProblem(): Problem {
   return problems[Math.floor(Math.random() * problems.length)];
 }
+
+
+// export const languageOptions: LanguageOption[] = [
+//   { label: 'Python', value: 71 },
+//   { label: 'Java', value: 62 },
+//   { label: 'JavaScript', value: 63 },
+//   { label: 'C++', value: 51 },
+// ];

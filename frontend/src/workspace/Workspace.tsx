@@ -3,12 +3,15 @@ import React from 'react';
 import Split from 'react-split';
 import ProblemDescription from './problemDescription/ProblemDescription';
 import Playground from './Editor/Playground';
-import type { Problem } from '@/utils/problems/types/problem';
+import type { Problem } from "../../../backend/src/types/problem";
 
 
 type WorkspaceProps = {
   problem: Problem;
 };
+
+// UPDATE TO TAKE IN THE NEW STARTERCODE ARRAY
+// UPDATE ALL IMPORTS OF THE PROBLEM TO LOOK TO THE BACKEND VERSION INSTEAD 
 
 const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   return (
