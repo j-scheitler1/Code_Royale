@@ -1,27 +1,34 @@
 import React from 'react';
 import { languageOptions } from './languages';
-import { submitCode } from '../../../pages/problem/submitCode'; // adjust path as needed
+// import { submitCode } from '../../../pages/problem/submitCode';
 
 type PreferenceNavProps = {
   languageId: number;
   setLanguageId: (id: number) => void;
+  // submitCode: boolean;
+  setSubmitSelect: (id: boolean) => void;
 }
 
-const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId }) => {
+const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId, setSubmitSelect }) => {
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguageId(Number(e.target.value));
   };
 
-  const handleSubmit = async () => {
-    alert(languageId);
-    const result = await submitCode({
-      source_code: 'print("Hello, Judge0!")',
-      language_id: languageId,
-    });
+  const handleSubmit = () => {
+    setSubmitSelect(true);
+  }
 
-    console.log('Judge0 Result:', result);
-    alert(result.stdout || result.stderr || 'No output');
-  };
+  // TEMPORARY SUBMISSION - FOR TESTING
+  // const handleSubmit = async () => {
+  //   alert(languageId);
+  //   const result = await submitCode({
+  //     source_code: 'print("Hello, Judge0!")',
+  //     language_id: languageId,
+  //   });
+
+  //   console.log('Judge0 Result:', result);
+  //   alert(result.stdout || result.stderr || 'No output');
+  // };
 
   return (
     <div className="h-11 flex bg-brand text-white">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Split from 'react-split'
 import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
@@ -7,10 +7,10 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import type { StarterCode } from '../../../../backend/src/types/problem';
 import type { TestCase } from '@/utils/problems/types/problem';
 import { javascript } from '@codemirror/lang-javascript';
-// import { python } from '@codemirror/lang-python';
-// import { java } from '@codemirror/lang-java';
-// import { cpp } from '@codemirror/lang-cpp';
-// import { html } from '@codemirror/lang-html';
+import { python } from '@codemirror/lang-python';
+import { java } from '@codemirror/lang-java';
+import { cpp } from '@codemirror/lang-cpp';
+import { submitCode } from '../../pages/problem/submitCode';
 // import { Extension } from '@codemirror/state';
 
 /* 
@@ -22,6 +22,16 @@ UNCOMMENT THE IMPORTS AND ADD THE OTHER LANGUAGE SUPPORTS
 
 */
 
+const JavaScript = [javascript()];
+const Python = [python()];
+const Java = [java()];
+const CPlusPlus = [cpp()];
+
+const JavaScriptNumber = 63;
+const PythonNumber = 71;
+const JavaNumber = 62;
+const CPlusPlusNumber = 51;
+
 type PlaygroundProps = {
   starterCode?: StarterCode[];
   testCases?: TestCase[];
@@ -29,18 +39,64 @@ type PlaygroundProps = {
 
 const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
-  const [languageId, setLanguageId] = useState<number>(71);
-
   const activeTestCase = testCases?.[activeTestCaseIndex];
+  
+  const [languageId, setLanguageId] = useState<number>(71);
+  const [languageExtension, setLanguageExtension] = useState(Python);
+  
+  const [startingCode, setStartingCode] = useState(starterCode?.[0].starterCode);
+
+  const [submitSelect, setSubmitSelect] = useState(false);
+  const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
+
+  useEffect(() => {
+    if (languageId == PythonNumber) {
+      setLanguageExtension(Python);
+      setStartingCode(starterCode?.[0].starterCode)
+    }
+    else if (languageId == JavaNumber) {
+      setLanguageExtension(Java);
+      setStartingCode(starterCode?.[1].starterCode)
+    }
+    else if (languageId == JavaScriptNumber) {
+      setLanguageExtension(JavaScript);
+      setStartingCode(starterCode?.[2].starterCode)
+    }
+    else if (languageId == CPlusPlusNumber) {
+      setLanguageExtension(CPlusPlus);
+      setStartingCode(starterCode?.[3].starterCode)
+    }
+  }, [languageId]);
+
+  const handleSubmitCode = async () => {
+    const result = await submitCode({
+      source_code: submissionCode ?? "",
+      language_id: languageId,
+    });
+
+    console.log('results' + result);
+  }
+
+  useEffect(() => {
+    // Build Submission -> Send to Judge0 with Test Cases -> get response and feedback
+    if(submitSelect) {
+      console.log(submissionCode);
+    }
+    
+    handleSubmitCode()
+
+    setSubmitSelect(false);
+  }, [submitSelect])
 
   return (
     <div className="flex flex-col bg-brand">
-      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} />
+      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect}/>
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 
-            value={starterCode?.[0].starterCode}
-            extensions={[javascript()]}
+            value={startingCode}
+            onChange={(value) => setSubmissionCode(value)}
+            extensions={languageExtension}
             className='h-full w-full'
             theme={oneDark}
           />

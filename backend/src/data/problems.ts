@@ -45,6 +45,12 @@ export const problems: Problem[] = [
         outputText: '[0,1]',
         explanation: 'nums[0] + nums[1] == 9',
       },
+      {
+        id: 1,
+        inputText: '[]',
+        outputText: '[]',
+        explanation: 'Exaplanation',
+      },
     ],
     testCases: [
       {
@@ -55,20 +61,20 @@ export const problems: Problem[] = [
     constraints: 'Each input has exactly one solution.',
     starterCode: [
       {
-        languageId: 71,
-        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+        languageId: 71, // Python
+        starterCode: 'class Solution:\n\tdef twoSum(self, nums: List[int], target: int) -> List[int]:'
       },
       {
-        languageId: 62,
-        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+        languageId: 62, // Java
+        starterCode: 'class Solution {\n\tpublic int[] towSum(int[] nums, int target) { \n\n\t} \n}'
       },
       {
-        languageId: 63,
-        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+        languageId: 63, // JavaScript
+        starterCode: 'class Solution {\n\t/**\n\t* @param {number[]} nums\n\t* @param {number} target\n\t* @return {number[]}\n\t*/\n\ttwoSum(nums, target) {\n \n\t}\n}'
       },
       {
-        languageId: 51,
-        starterCode: 'def twoSum(nums, target) \n # Write your code here \n'
+        languageId: 51, // C++
+        starterCode: 'class Solution {\npublic: \n\tvector<int> twoSum(vector<int>& nums, int target) { \n  \n\n\t} \n}'
       },
     ],
     starterFunctionName: 'function twoSum(',
