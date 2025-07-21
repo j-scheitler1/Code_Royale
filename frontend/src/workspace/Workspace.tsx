@@ -10,9 +10,6 @@ type WorkspaceProps = {
   problem: Problem;
 };
 
-// UPDATE TO TAKE IN THE NEW STARTERCODE ARRAY
-// UPDATE ALL IMPORTS OF THE PROBLEM TO LOOK TO THE BACKEND VERSION INSTEAD 
-
 const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
   return (
     <div className="h-screen">
@@ -26,6 +23,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
         <Playground 
           starterCode={problem.starterCode}
           testCases={problem.testCases}
+          judge0TestCase={problem.judge0TestCase.code}
         />
       </Split>
     </div>

@@ -18,7 +18,7 @@ const Header: React.FC = () => {
             to="/about"
             className="text-brand transition duration-200 hover:font-bold hover:scale-105"
           >
-            {'{ About Us }'}
+            {'{ About }'}
           </Link>
         </div>
         <div className="w-25 ml-2">

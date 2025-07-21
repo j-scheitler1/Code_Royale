@@ -35,9 +35,10 @@ const CPlusPlusNumber = 51;
 type PlaygroundProps = {
   starterCode?: StarterCode[];
   testCases?: TestCase[];
+  judge0TestCase?: string;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
   
@@ -49,6 +50,7 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
   const [submitSelect, setSubmitSelect] = useState(false);
   const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
 
+  // Change Language
   useEffect(() => {
     if (languageId == PythonNumber) {
       setLanguageExtension(Python);
@@ -68,23 +70,24 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
     }
   }, [languageId]);
 
+  // BEFORE RUNNING THE CODE TOMMOROW FIX THE MULTIPLE SUBMISSIONS ISSUE AS DAILY LIMIT IS 50
+
   const handleSubmitCode = async () => {
     const result = await submitCode({
       source_code: submissionCode ?? "",
       language_id: languageId,
     });
-
-    console.log('results' + result);
+    console.log('results' + JSON.stringify(result));
   }
 
+  // Build the Submission Code
   useEffect(() => {
-    // Build Submission -> Send to Judge0 with Test Cases -> get response and feedback
-    if(submitSelect) {
-      console.log(submissionCode);
-    }
-    
+    if (!submitSelect) return;
+    let tempSubmissionCode = 'from typing import List\n';
+    tempSubmissionCode += submissionCode;
+    tempSubmissionCode += judge0TestCase ?? "";
+    setSubmissionCode(tempSubmissionCode);
     handleSubmitCode()
-
     setSubmitSelect(false);
   }, [submitSelect])
 

@@ -77,18 +77,12 @@ export const problems: Problem[] = [
         starterCode: 'class Solution {\npublic: \n\tvector<int> twoSum(vector<int>& nums, int target) { \n  \n\n\t} \n}'
       },
     ],
-    starterFunctionName: 'function twoSum(',
+    judge0TestCase: {
+      code: `\n\n\nif __name__ == "__main__":\n    sol = Solution()\n\n    result1 = sol.twoSum([2, 7, 11, 15], 9)\n    print("Test 1:", result1)\n    assert result1 in ([0, 1], [1, 0]), f"Test 1 Failed: got {result1}"\n\n    result2 = sol.twoSum([3, 2, 4], 6)\n    print("Test 2:", result2)\n    assert result2 in ([1, 2], [2, 1]), f"Test 2 Failed: got {result2}"\n\n    result3 = sol.twoSum([3, 3], 6)\n    print("Test 3:", result3)\n    assert result3 in ([0, 1], [1, 0]), f"Test 3 Failed: got {result3}"\n\n    print("All tests passed!")`
+    }
   },
 ];
 
 export function getRandomProblem(): Problem {
   return problems[Math.floor(Math.random() * problems.length)];
 }
-
-
-// export const languageOptions: LanguageOption[] = [
-//   { label: 'Python', value: 71 },
-//   { label: 'Java', value: 62 },
-//   { label: 'JavaScript', value: 63 },
-//   { label: 'C++', value: 51 },
-// ];

@@ -20,8 +20,8 @@ export function createMatchIfPossible(io: Server) {
   const match: Match = {
     players: [player1.userData, player2.userData],
     sockets: [player1.socket, player2.socket],
-    problem,
-    timer: 1800,
+    problem: problem,
+    timer: 30, // 30 minutes in seconds
   };
 
   matches.set(matchId, match);
@@ -53,6 +53,7 @@ function startCountdown(io: Server, matchId: string) {
     }
 
     current.timer--;
+    console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
     io.to(matchId).emit("timer_update", current.timer);
 
     if (current.timer <= 0) {
@@ -60,5 +61,5 @@ function startCountdown(io: Server, matchId: string) {
       matches.delete(matchId);
       clearInterval(interval);
     }
-  }, 1000);
+  }, 1000); // Emits every 1000ms or 1 sec
 }

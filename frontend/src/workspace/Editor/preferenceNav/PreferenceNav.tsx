@@ -5,7 +5,6 @@ import { languageOptions } from './languages';
 type PreferenceNavProps = {
   languageId: number;
   setLanguageId: (id: number) => void;
-  // submitCode: boolean;
   setSubmitSelect: (id: boolean) => void;
 }
 
