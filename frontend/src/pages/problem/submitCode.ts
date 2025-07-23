@@ -14,6 +14,7 @@ export async function submitCode({
 }) {
   try {
     console.log(API_URL);
+    console.log("Source Code sending \n" + source_code)
     const response = await axios.post(
       `${API_URL}?base64_encoded=false&wait=true`,
       {

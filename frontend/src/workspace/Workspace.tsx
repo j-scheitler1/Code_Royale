@@ -8,9 +8,11 @@ import type { Problem } from "../../../backend/src/types/problem";
 
 type WorkspaceProps = {
   problem: Problem;
+  timer: number;
+  setMatchEnded: (ended: boolean) => void;
 };
 
-const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
+const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setMatchEnded }) => {
   return (
     <div className="h-screen">
       <Split className="split h-full" minSize={0}>
@@ -24,6 +26,8 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem }) => {
           starterCode={problem.starterCode}
           testCases={problem.testCases}
           judge0TestCase={problem.judge0TestCase.code}
+          setMatchEnded= {setMatchEnded}
+          timer={timer}
         />
       </Split>
     </div>

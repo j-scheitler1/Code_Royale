@@ -10,6 +10,19 @@ export function registerSocketHandlers(io: Server, socket: Socket) {
     createMatchIfPossible(io);
   });
 
+  // HANDLE LOGIC BETTER THIS IS JUST A TEMPORARY METHOD
+  socket.on("player_won", (matchId: string) => {
+    console.log(`Player won in match ${matchId}`);
+    const match = io.sockets.adapter.rooms.get(matchId);
+    if (match) {
+      io.to(matchId).emit("match_ended", { result: "win" });
+      match.forEach((socketId) => {
+        io.sockets.sockets.get(socketId)?.leave(matchId);
+      });
+      io.sockets.adapter.rooms.delete(matchId);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(`Socket ${socket.id} disconnected`);
     removeFromQueue(socket.id);

@@ -21,7 +21,7 @@ export function createMatchIfPossible(io: Server) {
     players: [player1.userData, player2.userData],
     sockets: [player1.socket, player2.socket],
     problem: problem,
-    timer: 30, // 30 minutes in seconds
+    timer: 50000000, // 30 minutes in seconds
   };
 
   matches.set(matchId, match);

@@ -6,9 +6,10 @@ type PreferenceNavProps = {
   languageId: number;
   setLanguageId: (id: number) => void;
   setSubmitSelect: (id: boolean) => void;
+  timer: number;
 }
 
-const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId, setSubmitSelect }) => {
+const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId, setSubmitSelect, timer }) => {
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguageId(Number(e.target.value));
   };
@@ -17,20 +18,18 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId
     setSubmitSelect(true);
   }
 
-  // TEMPORARY SUBMISSION - FOR TESTING
-  // const handleSubmit = async () => {
-  //   alert(languageId);
-  //   const result = await submitCode({
-  //     source_code: 'print("Hello, Judge0!")',
-  //     language_id: languageId,
-  //   });
-
-  //   console.log('Judge0 Result:', result);
-  //   alert(result.stdout || result.stderr || 'No output');
-  // };
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
 
   return (
-    <div className="h-11 flex bg-brand text-white">
+
+    // Language Selector
+    <div className="relative h-11 flex items-center bg-brand text-brand">
       <div className="flex mx-8 p-1">
         <select
           className="text-brand py-1 bg-brand-secondary"
@@ -43,6 +42,11 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="absolute left-1/2 -translate-x-1/2 flex items-center text-brand">
+        <span className="mr-2">Time Remaining</span>
+        {formatTime(timer)}
       </div>
 
       <div className="flex flex-1 justify-end items-center bg-brand p-1 pr-8">

@@ -33,12 +33,14 @@ const JavaNumber = 62;
 const CPlusPlusNumber = 51;
 
 type PlaygroundProps = {
-  starterCode?: StarterCode[];
-  testCases?: TestCase[];
-  judge0TestCase?: string;
+  starterCode: StarterCode[];
+  testCases: TestCase[];
+  judge0TestCase: string;
+  setMatchEnded: (ended: boolean) => void;
+  timer: number;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase }) => {
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setMatchEnded }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
   
@@ -70,30 +72,37 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     }
   }, [languageId]);
 
-  // BEFORE RUNNING THE CODE TOMMOROW FIX THE MULTIPLE SUBMISSIONS ISSUE AS DAILY LIMIT IS 50
-
   const handleSubmitCode = async () => {
     const result = await submitCode({
       source_code: submissionCode ?? "",
       language_id: languageId,
     });
     console.log('results' + JSON.stringify(result));
+    if (result.stdout.includes('ALL TESTS PASSED')) {
+      setMatchEnded(true);
+    }
   }
 
-  // Build the Submission Code
+  
+  // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
   useEffect(() => {
     if (!submitSelect) return;
+
     let tempSubmissionCode = 'from typing import List\n';
     tempSubmissionCode += submissionCode;
-    tempSubmissionCode += judge0TestCase ?? "";
+    tempSubmissionCode += judge0TestCase;
     setSubmissionCode(tempSubmissionCode);
+    
+    console.log('Submission Code: \n' + tempSubmissionCode);
+    
     handleSubmitCode()
     setSubmitSelect(false);
+  
   }, [submitSelect])
 
   return (
     <div className="flex flex-col bg-brand">
-      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect}/>
+      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect} timer={timer}/>
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 

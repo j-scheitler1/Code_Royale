@@ -54,7 +54,7 @@ export const problems: Problem[] = [
     ],
     testCases: [
       {
-        input: '[2,7,11,15],9',
+        input: '[2, 7, 11, 15],9',
         output: '[0,1]',
       },
     ],
@@ -62,7 +62,7 @@ export const problems: Problem[] = [
     starterCode: [
       {
         languageId: 71, // Python
-        starterCode: 'class Solution:\n\tdef twoSum(self, nums: List[int], target: int) -> List[int]:'
+        starterCode: 'class Solution:\n  def twoSum(self, nums: List[int], target: int) -> List[int]:'
       },
       {
         languageId: 62, // Java
@@ -78,7 +78,7 @@ export const problems: Problem[] = [
       },
     ],
     judge0TestCase: {
-      code: `\n\n\nif __name__ == "__main__":\n    sol = Solution()\n\n    result1 = sol.twoSum([2, 7, 11, 15], 9)\n    print("Test 1:", result1)\n    assert result1 in ([0, 1], [1, 0]), f"Test 1 Failed: got {result1}"\n\n    result2 = sol.twoSum([3, 2, 4], 6)\n    print("Test 2:", result2)\n    assert result2 in ([1, 2], [2, 1]), f"Test 2 Failed: got {result2}"\n\n    result3 = sol.twoSum([3, 3], 6)\n    print("Test 3:", result3)\n    assert result3 in ([0, 1], [1, 0]), f"Test 3 Failed: got {result3}"\n\n    print("All tests passed!")`
+      code: `\ndef run_tests():\n    sol = Solution()\n    try:\n        result1 = sol.twoSum([2, 7, 11, 15], 9)\n        print("Test 1:", result1)\n        if result1 not in ([0, 1], [1, 0]):\n            print("FAIL: Test 1")\n            return\n\n        result2 = sol.twoSum([3, 2, 4], 6)\n        print("Test 2:", result2)\n        if result2 not in ([1, 2], [2, 1]):\n            print("FAIL: Test 2")\n            return\n\n        result3 = sol.twoSum([3, 3], 6)\n        print("Test 3:", result3)\n        if result3 not in ([0, 1], [1, 0]):\n            print("FAIL: Test 3")\n            return\n\n        print("ALL TESTS PASSED")\n    except Exception as e:\n        print("ERROR:", e)\n\nif __name__ == "__main__":\n    run_tests()\n`,
     }
   },
 ];
