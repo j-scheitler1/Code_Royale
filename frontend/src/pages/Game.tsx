@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // import ProblemPage from "./problem/ProblemPage";
@@ -14,50 +14,54 @@ interface MatchState {
 }
 
 const Game: React.FC = () => {
-const location = useLocation();
-const state = location.state as MatchState;
-const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const state = location.state as MatchState;
+  const initialTimer = state.timer;
+  const [timer, setTimer] = useState<number>(initialTimer);
+  const [matchEnded, setmatchEnded] = useState(false);
+  const submittedCorrectlyRef = useRef(false);
 
-const initialTimer = state.timer;
-const [timer, setTimer] = useState<number>(initialTimer);
-const [matchEnded, setmatchEnded] = useState(false);
-
-useEffect(() => {
-  if (!state) return;
-  const { matchId } = state;
-  const handleTimer = (newTime: number) => setTimer(newTime);
-  const handleEnded = ({ result }: { result: string }) => {
-    console.log("Match ended with:", result);
-    navigate('/dashboard')
-  };
-  socket.emit("join", matchId);
-  socket.on("timer_update", handleTimer);
-  socket.on("match_ended", handleEnded);
-
-  return () => {
-    socket.off("timer_update", handleTimer);
-    socket.off("match_ended", handleEnded);
+  const setSubmittedCorrectly = (value: boolean) => {
+    submittedCorrectlyRef.current = value;
   };
 
-}, [state, navigate]);
+  useEffect(() => {
+    if (!state) return;
+    const { matchId } = state;
+    const handleTimer = (newTime: number) => setTimer(newTime);
+    const handleEnded = ({ result }: { result: string }) => {
+      const submittedCorrectly = submittedCorrectlyRef.current;
+      if (result === "win") navigate('/outcome', { state: { submittedCorrectly: submittedCorrectly, isWinner: true } });
+      else if (result === "tie") navigate('/outcome', { state: { submittedCorrectly: submittedCorrectly, isWinner: false } });
+    };
+    socket.emit("join", matchId);
+    socket.on("timer_update", handleTimer);
+    socket.on("match_ended", handleEnded); 
 
-useEffect(() => {
-  if (matchEnded) {
-    socket.emit("player_won", state.matchId);
+    return () => {
+      socket.off("timer_update", handleTimer);
+      socket.off("match_ended", handleEnded);
+    };
+
+  }, [state, navigate]);
+
+  useEffect(() => {
+    if (matchEnded) {
+      socket.emit("player_won", state.matchId);
+    }
+  }, [matchEnded, state.matchId]);
+
+  if (!state) {
+    return <div>Error: Match state not found.</div>;
   }
-}, [matchEnded, state.matchId]);
-
-if (!state) {
-  return <div>Error: Match state not found.</div>;
-}
-const { problem } = state;
-// const { matchId, problem, players } = state;
-
-return (
-  <div>
-    <Workspace problem={problem} timer={timer} setMatchEnded={setmatchEnded} />
-  </div>
-);
+  const { problem } = state;
+  
+  return (
+    <div>
+      <Workspace problem={problem} timer={timer} setMatchEnded={setmatchEnded} setSubmittedCorrectly={setSubmittedCorrectly} />
+    </div>
+  );
 };
 
 export default Game;

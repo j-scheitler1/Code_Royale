@@ -56,10 +56,18 @@ function startCountdown(io: Server, matchId: string) {
     console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
     io.to(matchId).emit("timer_update", current.timer);
 
+    // SENDS TIE TO GAME IF TIMER REACHES ZERO
     if (current.timer <= 0) {
-      io.to(matchId).emit("match_ended", { result: "timeout" });
+      io.to(matchId).emit("match_ended", { result: "tie" });
       matches.delete(matchId);
       clearInterval(interval);
     }
-  }, 1000); // Emits every 1000ms or 1 sec
+  }, 1000);
+}
+
+export function deleteMatch(matchId: string) {
+  if (matches.has(matchId)) {
+    matches.delete(matchId);
+    console.log(`Match ${matchId} deleted`);
+  }
 }

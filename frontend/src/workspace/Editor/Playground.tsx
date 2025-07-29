@@ -37,10 +37,11 @@ type PlaygroundProps = {
   testCases: TestCase[];
   judge0TestCase: string;
   setMatchEnded: (ended: boolean) => void;
+  setSubmittedCorrectly: (submitted: boolean) => void;
   timer: number;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setMatchEnded }) => {
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setMatchEnded, setSubmittedCorrectly }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
   
@@ -72,18 +73,18 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     }
   }, [languageId]);
 
-  const handleSubmitCode = async () => {
+  const handleSubmitCode = async (code: string) => {
     const result = await submitCode({
-      source_code: submissionCode ?? "",
+      source_code: code ?? "",
       language_id: languageId,
     });
-    console.log('results' + JSON.stringify(result));
     if (result.stdout.includes('ALL TESTS PASSED')) {
+      console.log('SETTING CORRECTLY SUBMITTED');
+      setSubmittedCorrectly(true);
       setMatchEnded(true);
     }
   }
 
-  
   // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
   useEffect(() => {
     if (!submitSelect) return;
@@ -92,10 +93,11 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     tempSubmissionCode += submissionCode;
     tempSubmissionCode += judge0TestCase;
     setSubmissionCode(tempSubmissionCode);
+
     
     console.log('Submission Code: \n' + tempSubmissionCode);
     
-    handleSubmitCode()
+    handleSubmitCode(tempSubmissionCode);
     setSubmitSelect(false);
   
   }, [submitSelect])

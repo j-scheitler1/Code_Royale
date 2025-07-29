@@ -10,9 +10,10 @@ type WorkspaceProps = {
   problem: Problem;
   timer: number;
   setMatchEnded: (ended: boolean) => void;
+  setSubmittedCorrectly: (submitted: boolean) => void;
 };
 
-const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setMatchEnded }) => {
+const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setMatchEnded, setSubmittedCorrectly  }) => {
   return (
     <div className="h-screen">
       <Split className="split h-full" minSize={0}>
@@ -27,6 +28,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setMatchEnded })
           testCases={problem.testCases}
           judge0TestCase={problem.judge0TestCase.code}
           setMatchEnded= {setMatchEnded}
+          setSubmittedCorrectly={setSubmittedCorrectly}
           timer={timer}
         />
       </Split>

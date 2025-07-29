@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { addToQueue, removeFromQueue } from "./queue";
-import { createMatchIfPossible } from "./matchManager";
+import { createMatchIfPossible, deleteMatch } from "./matchManager";
 import { UserData } from "../types/problem";
 
 export function registerSocketHandlers(io: Server, socket: Socket) {
@@ -12,7 +12,6 @@ export function registerSocketHandlers(io: Server, socket: Socket) {
 
   // HANDLE LOGIC BETTER THIS IS JUST A TEMPORARY METHOD
   socket.on("player_won", (matchId: string) => {
-    console.log(`Player won in match ${matchId}`);
     const match = io.sockets.adapter.rooms.get(matchId);
     if (match) {
       io.to(matchId).emit("match_ended", { result: "win" });
@@ -21,6 +20,10 @@ export function registerSocketHandlers(io: Server, socket: Socket) {
       });
       io.sockets.adapter.rooms.delete(matchId);
     }
+  });
+
+  socket.on("delete_match", (matchId: string) => {
+    deleteMatch(matchId);
   });
 
   socket.on("disconnect", () => {

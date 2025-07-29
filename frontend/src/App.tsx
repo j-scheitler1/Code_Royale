@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import TestProblemPage from "./pages/problem/TestProblemPage";
 import Loading from "./pages/Loading";
 import Game from "./pages/Game";
+import Outcome from "./pages/Outcome";
 import { useAuth } from "./pages/auth";
 import { RequireAuth } from "./pages/auth/RequireAuth";
 
@@ -35,6 +36,7 @@ const App = () => {
         />
         {/* ADD AUTH BACK WHEN DONE WITH BRANCH */}
         <Route path="/testProblem" element={<TestProblemPage />} />
+        <Route path="/outcome" element={<Outcome />} />
         <Route path='/game/:matchId' element={<Game />} />
       </Routes>
     </>
