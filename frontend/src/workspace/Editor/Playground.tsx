@@ -1,33 +1,116 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Split from 'react-split'
 import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
 import { useState } from 'react';
-import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
+import type { StarterCode } from '../../../../backend/src/types/problem';
+import type { TestCase } from '@/utils/problems/types/problem';
+import { javascript } from '@codemirror/lang-javascript';
+import { python } from '@codemirror/lang-python';
+import { java } from '@codemirror/lang-java';
+import { cpp } from '@codemirror/lang-cpp';
+import { submitCode } from '../../pages/problem/submitCode';
+// import { Extension } from '@codemirror/state';
+
+/* 
+
+FIGURE OUT THE MAPPING FOR THE LANGUAGE TO THE
+ACTUAL STARTER CODE THAT GETS DISPLAYED ON THE SCREEN
+
+UNCOMMENT THE IMPORTS AND ADD THE OTHER LANGUAGE SUPPORTS
+
+*/
+
+const JavaScript = [javascript()];
+const Python = [python()];
+const Java = [java()];
+const CPlusPlus = [cpp()];
+
+const JavaScriptNumber = 63;
+const PythonNumber = 71;
+const JavaNumber = 62;
+const CPlusPlusNumber = 51;
 
 type PlaygroundProps = {
-  starterCode?: string;
-  testCases?: {
-    input: string;
-    output: string;
-  }[];
+  starterCode: StarterCode[];
+  testCases: TestCase[];
+  judge0TestCase: string;
+  setMatchEnded: (ended: boolean) => void;
+  setSubmittedCorrectly: (submitted: boolean) => void;
+  timer: number;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases }) => {
-  const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); // ✅ Track selected case
-
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setMatchEnded, setSubmittedCorrectly }) => {
+  const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
+  
+  const [languageId, setLanguageId] = useState<number>(71);
+  const [languageExtension, setLanguageExtension] = useState(Python);
+  
+  const [startingCode, setStartingCode] = useState(starterCode?.[0].starterCode);
+
+  const [submitSelect, setSubmitSelect] = useState(false);
+  const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
+
+  // Change Language
+  useEffect(() => {
+    if (languageId == PythonNumber) {
+      setLanguageExtension(Python);
+      setStartingCode(starterCode?.[0].starterCode)
+    }
+    else if (languageId == JavaNumber) {
+      setLanguageExtension(Java);
+      setStartingCode(starterCode?.[1].starterCode)
+    }
+    else if (languageId == JavaScriptNumber) {
+      setLanguageExtension(JavaScript);
+      setStartingCode(starterCode?.[2].starterCode)
+    }
+    else if (languageId == CPlusPlusNumber) {
+      setLanguageExtension(CPlusPlus);
+      setStartingCode(starterCode?.[3].starterCode)
+    }
+  }, [languageId]);
+
+  const handleSubmitCode = async (code: string) => {
+    const result = await submitCode({
+      source_code: code ?? "",
+      language_id: languageId,
+    });
+    if (result.stdout.includes('ALL TESTS PASSED')) {
+      console.log('SETTING CORRECTLY SUBMITTED');
+      setSubmittedCorrectly(true);
+      setMatchEnded(true);
+    }
+  }
+
+  // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
+  useEffect(() => {
+    if (!submitSelect) return;
+
+    let tempSubmissionCode = 'from typing import List\n';
+    tempSubmissionCode += submissionCode;
+    tempSubmissionCode += judge0TestCase;
+    setSubmissionCode(tempSubmissionCode);
+
+    
+    console.log('Submission Code: \n' + tempSubmissionCode);
+    
+    handleSubmitCode(tempSubmissionCode);
+    setSubmitSelect(false);
+  
+  }, [submitSelect])
 
   return (
     <div className="flex flex-col bg-brand">
-      <PreferenceNav />
+      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect} timer={timer}/>
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 
-            value={starterCode}
-            extensions={[javascript()]}
+            value={startingCode}
+            onChange={(value) => setSubmissionCode(value)}
+            extensions={languageExtension}
             className='h-full w-full'
             theme={oneDark}
           />

@@ -1,6 +1,3 @@
-
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Example = {
   id: number;
   inputText: string
@@ -9,29 +6,18 @@ export type Example = {
   img?: string;
 }
 
-export type Problem = {
+export interface TestCase {
+  input: string;
+  output: string;
+}
+
+export interface Problem {
   id: string;
   title: string;
   problemStatement: string;
   examples: Example[];
+  testCases: TestCase[];
   constraints: string;
   starterCode: string;
-  handlerFunction: ((fn: any) => boolean) | string;
   starterFunctionName: string;
-  testCases: {
-    input: string;
-    output: string;
-  }[];
-};
-
-// export type DBProblem = {
-// 	id: string;
-// 	title: string;
-// 	category: string;
-// 	difficulty: string;
-// 	likes: number;
-// 	dislikes: number;
-// 	order: number;
-// 	videoId?: string;
-// 	link?: string;
-// };
+}

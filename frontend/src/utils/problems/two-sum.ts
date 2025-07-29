@@ -1,40 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import assert from 'assert';
+// import assert from 'assert';
 import type{ Problem } from './types/problem';
 
 const starterCode = `function twoSum(nums, target) {
   // Write your code here
 }`
-
-// Checks user has correct code
-const handlerTwoSum = (fn: any) => {
-  // fn is the callback that user's code is passed into
-  try {
-    const nums = [
-      [2, 7, 11, 15],
-      [3, 2, 4],
-      [3, 3]
-    ];
-    const targets = [9, 6, 6];
-    const answers = [
-      [0, 1],
-      [1, 2],
-      [0, 1]
-    ];
-
-    // Result is the output of user's function and asnwers is the expected output
-    for (let i = 0; i < nums.length; i++) {
-      const result = fn(nums[i], targets[i]);
-      assert.deepStrictEqual(result, answers[i], `Test case #${i + 1} failed: expected ${answers[i]} but got ${result}`);
-    }
-    return true;
-
-  } catch (error: any) {
-    console.log(error) 
-    throw new Error(error);
-  }
-}
 
 export const twoSum: Problem = {
   id: 'two-sum',
@@ -80,12 +51,6 @@ export const twoSum: Problem = {
     },
   ],
   constraints: 'You may assume that each input would have exactly one solution.', // ADD IN HTML CONSTRAINTS HERE
-  handlerFunction: (fn) => {
-    assert.deepEqual(fn([2, 7, 11, 15], 9), [0, 1]);
-    assert.deepEqual(fn([3, 2, 4], 6), [1, 2]);
-    assert.deepEqual(fn([3, 3], 6), [0, 1]);
-    return true;
-  },
   starterCode: starterCode,
   starterFunctionName: 'function twoSum(',
 }

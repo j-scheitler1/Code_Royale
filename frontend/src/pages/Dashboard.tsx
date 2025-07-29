@@ -3,6 +3,7 @@ import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../utils/socket";
 import { useState, useEffect } from "react"; 
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -38,19 +39,31 @@ function Dashboard() {
     });
 
     socket.on("match_found", (match) => {
-      alert(`Match found! Match ID: ${match.id}`);
+      console.log("Match found:", match);
+
+      navigate(`/game/${match.matchId}`, {
+        state: {
+          matchId: match.matchId,
+          problem: match.problem,
+          players: [match.opponent],
+          timer: match.timer,
+        }
+      });
+
     });
 
   }
 
   return (
     <div className="relative bg-brand min-h-screen">
-      <button
-        onClick={handleLogout}
-        className="absolute top-4 right-4 px-2 bg-gray-500 text-brand rounded hover:bg-gray-600 transition"
-      >
-        Logout
-      </button>
+      <div className="flex items-center">
+        <Link to="/" className="text-brand-secondary px-4 py-4">
+          {'{ Home }'}
+        </Link>
+        <Link to="/" onClick={handleLogout} className="text-brand-secondary py-4">
+          {`{ Logout }`}
+        </Link>
+      </div>
 
       <div className="flex flex-col items-center justify-center min-h-screen text-brand">
         <div className="text-xlg font-bold">

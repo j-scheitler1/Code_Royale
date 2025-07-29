@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { getQueue } from "./queue";
-import { getRandomProblem } from "./data/problems";
-import { Match, UserData } from "./types/problem";
+import { getRandomProblem } from "../data/problems";
+import { Match, UserData } from "../types/problem";
 import { Server } from "socket.io";
 
 const matches = new Map<string, Match>();
@@ -14,15 +14,19 @@ export function createMatchIfPossible(io: Server) {
   const player2 = queue.shift()!;
   const problem = getRandomProblem();
   const matchId = uuidv4();
+  
+  console.log(`Creating match ${matchId} between ${player1.userData.username} and ${player2.userData.username}`);
 
   const match: Match = {
     players: [player1.userData, player2.userData],
     sockets: [player1.socket, player2.socket],
-    problem,
-    timer: 1800,
+    problem: problem,
+    timer: 50000000, // 30 minutes in seconds
   };
 
   matches.set(matchId, match);
+  
+  console.log(`Match ${matchId} created with problem: ${problem.title}`);
 
   [player1.socket, player2.socket].forEach((socket, i) => {
     socket.join(matchId);
@@ -49,12 +53,21 @@ function startCountdown(io: Server, matchId: string) {
     }
 
     current.timer--;
+    console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
     io.to(matchId).emit("timer_update", current.timer);
 
+    // SENDS TIE TO GAME IF TIMER REACHES ZERO
     if (current.timer <= 0) {
-      io.to(matchId).emit("match_ended", { result: "timeout" });
+      io.to(matchId).emit("match_ended", { result: "tie" });
       matches.delete(matchId);
       clearInterval(interval);
     }
   }, 1000);
+}
+
+export function deleteMatch(matchId: string) {
+  if (matches.has(matchId)) {
+    matches.delete(matchId);
+    console.log(`Match ${matchId} deleted`);
+  }
 }
