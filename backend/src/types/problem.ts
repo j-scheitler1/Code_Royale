@@ -34,7 +34,7 @@ export interface Problem {
 
 export interface UserData {
   uid: string;
-  username: string;
+  email: string;
 }
 
 export interface Player {

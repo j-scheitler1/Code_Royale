@@ -15,7 +15,7 @@ export function createMatchIfPossible(io: Server) {
   const problem = getRandomProblem();
   const matchId = uuidv4();
   
-  console.log(`Creating match ${matchId} between ${player1.userData.username} and ${player2.userData.username}`);
+  console.log(`Creating match ${matchId} between ${player1.userData.email} and ${player2.userData.email}`);
 
   const match: Match = {
     players: [player1.userData, player2.userData],
@@ -27,12 +27,15 @@ export function createMatchIfPossible(io: Server) {
   matches.set(matchId, match);
   
   console.log(`Match ${matchId} created with problem: ${problem.title}`);
+  console.log("Backend Player 1", player1.userData.uid);
+  console.log("Backend Player 2", player2.userData.uid);
 
   [player1.socket, player2.socket].forEach((socket, i) => {
     socket.join(matchId);
     socket.emit("match_found", {
       matchId,
-      opponent: i === 0 ? player2.userData : player1.userData,
+      player1: player1.userData.uid, 
+      player2: player2.userData.uid,
       problem,
       timer: match.timer,
     });
@@ -58,7 +61,7 @@ function startCountdown(io: Server, matchId: string) {
 
     // SENDS TIE TO GAME IF TIMER REACHES ZERO
     if (current.timer <= 0) {
-      io.to(matchId).emit("match_ended", { result: "tie" });
+      io.to(matchId).emit("match_ended");
       matches.delete(matchId);
       clearInterval(interval);
     }

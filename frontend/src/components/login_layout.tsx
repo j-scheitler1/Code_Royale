@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/firebase';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
 const Login_Layout: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -17,14 +19,16 @@ const Login_Layout: React.FC = () => {
     firebaseError,
   ] = useSignInWithEmailAndPassword(auth);
 
-  React.useEffect(() => {
+  // User Logged In? -> Navigate to Dashboard
+  useEffect(() => {
     if (user) {
       setFormError(null);
       navigate('/dashboard');
     }
   }, [user, navigate]);
 
-  React.useEffect(() => {
+  // Handle Firebase Errors
+  useEffect(() => {
     if (firebaseError) {
       if (firebaseError.code === 'auth/user-not-found') {
         setFormError('No user found with this email.');
@@ -37,16 +41,38 @@ const Login_Layout: React.FC = () => {
       }
     }
   }, [firebaseError]);
-
-  const handleLogin = () => {
-
+  
+  const handleLogin = async () => {
     if (!email || !password) {
       setFormError('Please enter both email and password.');
       return;
     }
-    setPersistence(auth, browserLocalPersistence)
-    signInWithEmailAndPassword(email, password);
+    
+    try {
+      await setPersistence(auth, browserLocalPersistence); // Keeop user logged in
+      const result = await signInWithEmailAndPassword(email, password);
+      if (!result) {
+        setFormError('Login failed. Please try again.');
+        return;
+      }
+      await updateUserInFirestore(result.user);
+    } catch (error) {
+      setFormError('An error occurred while logging in. Please try again.');
+      console.error('Login error:', error);
+      return;
+    }
+
   };
+
+  const updateUserInFirestore = async (user: typeof auth.currentUser) => {
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, {
+        email: user.email,
+        lastLogin: serverTimestamp(),
+      }, { merge: true });
+    }
+  }
 
   return (
     <div className="min-h-screen bg-brand text-brand flex items-start justify-start p-4 text-lg">

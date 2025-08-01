@@ -4,14 +4,14 @@ import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
 import { useState } from 'react';
 import { oneDark } from '@codemirror/theme-one-dark';
-import type { StarterCode } from '../../../../backend/src/types/problem';
-import type { TestCase } from '@/utils/problems/types/problem';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import { cpp } from '@codemirror/lang-cpp';
 import { submitCode } from '../../pages/problem/submitCode';
-// import { Extension } from '@codemirror/state';
+
+import type { StarterCode } from '../../../../backend/src/types/problem';
+import type { TestCase } from '@/utils/problems/types/problem';
 
 /* 
 
@@ -36,12 +36,11 @@ type PlaygroundProps = {
   starterCode: StarterCode[];
   testCases: TestCase[];
   judge0TestCase: string;
-  setMatchEnded: (ended: boolean) => void;
-  setSubmittedCorrectly: (submitted: boolean) => void;
+  setIsWinner: (isWinner: boolean) => void;
   timer: number;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setMatchEnded, setSubmittedCorrectly }) => {
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setIsWinner }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
   
@@ -78,10 +77,9 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
       source_code: code ?? "",
       language_id: languageId,
     });
+    console.log('Submission Result:', result.stdout);
     if (result.stdout.includes('ALL TESTS PASSED')) {
-      console.log('SETTING CORRECTLY SUBMITTED');
-      setSubmittedCorrectly(true);
-      setMatchEnded(true);
+      setIsWinner(true);
     }
   }
 

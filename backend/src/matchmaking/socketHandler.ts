@@ -2,20 +2,24 @@ import { Server, Socket } from "socket.io";
 import { addToQueue, removeFromQueue } from "./queue";
 import { createMatchIfPossible, deleteMatch } from "./matchManager";
 import { UserData } from "../types/problem";
+// import { MatchState } from "../../../frontend/src/utils/types";
+
+// TODO: Think we need a call to stop the timer when the match ends
 
 export function registerSocketHandlers(io: Server, socket: Socket) {
   socket.on("join_queue", (userData: UserData) => {
-    console.log(`${userData.username} joined the queue`);
+    console.log(`${userData.email} joined the queue`);
     addToQueue({ socket, userData });
     createMatchIfPossible(io);
   });
 
-  // HANDLE LOGIC BETTER THIS IS JUST A TEMPORARY METHOD
   socket.on("player_won", (matchId: string) => {
+    console.log(`Player won in match ${matchId}`);
     const match = io.sockets.adapter.rooms.get(matchId);
     if (match) {
-      io.to(matchId).emit("match_ended", { result: "win" });
+      io.to(matchId).emit("match_ended");
       match.forEach((socketId) => {
+        console.log(`Notifying socket ${socketId} of match end`);
         io.sockets.sockets.get(socketId)?.leave(matchId);
       });
       io.sockets.adapter.rooms.delete(matchId);

@@ -44,8 +44,9 @@ function Dashboard() {
       navigate(`/game/${match.matchId}`, {
         state: {
           matchId: match.matchId,
+          player1: match.player1,
+          player2: match.player2,
           problem: match.problem,
-          players: [match.opponent],
           timer: match.timer,
         }
       });

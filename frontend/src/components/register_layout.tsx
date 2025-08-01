@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/firebase';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
 const Register_Layout: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -16,14 +18,14 @@ const Register_Layout: React.FC = () => {
     firebaseError,
   ] = useCreateUserWithEmailAndPassword(auth);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       setFormError(null);
       navigate('/dashboard');
     }
   }, [user, navigate]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (firebaseError) {
       if (firebaseError.code === 'auth/email-already-in-use') {
         setFormError('Email already in use. Please try a different email.');
@@ -37,14 +39,36 @@ const Register_Layout: React.FC = () => {
     }
   }, [firebaseError]);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password) {
       setFormError('Please enter both email and password.');
       return;
     }
 
-    createUserWithEmailAndPassword(email, password);
+    try {
+      const result = await createUserWithEmailAndPassword(email, password);
+      if (!result) {
+        setFormError('Registration failed. Please try again.');
+        return;
+      }
+      addUserToFirestore(result.user);
+    } catch (error) {
+      setFormError('Registration failed. Please try again.');
+      console.error('Registration error:', error);
+      return;
+    }
   };
+
+  const addUserToFirestore = async (user: typeof auth.currentUser) => {
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, {
+        email: user.email,
+        lastLogin: serverTimestamp(),
+        createdAt: serverTimestamp(),
+      });
+    }
+  }
 
   return (
     <div className="min-h-screen bg-brand text-brand flex items-start justify-start p-4 font-hacker text-lg">
