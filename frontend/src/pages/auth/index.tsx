@@ -1,8 +1,10 @@
 // src/auth/index.tsx
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, type User } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+
+type User = typeof auth.currentUser;
 
 interface AuthContextType {
   user: User | null;
