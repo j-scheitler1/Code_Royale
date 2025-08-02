@@ -1,74 +1,24 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase/firebase';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
+import { useRegister } from '../firebase/userService';
 
 const Register_Layout: React.FC = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [formError, setFormError] = React.useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    firebaseError,
-  ] = useCreateUserWithEmailAndPassword(auth);
+  const { register, loading, formError, user } = useRegister();
 
   useEffect(() => {
     if (user) {
-      setFormError(null);
       navigate('/dashboard');
     }
   }, [user, navigate]);
 
-  useEffect(() => {
-    if (firebaseError) {
-      if (firebaseError.code === 'auth/email-already-in-use') {
-        setFormError('Email already in use. Please try a different email.');
-      } else if (firebaseError.code === 'auth/invalid-email') {
-        setFormError('Invalid email format.');
-      } else if (firebaseError.code === 'auth/weak-password') {
-        setFormError('Password should be at least 6 characters.');
-      } else {
-        setFormError('Something went wrong. Please try again.');
-      }
-    }
-  }, [firebaseError]);
-
   const handleRegister = async () => {
-    if (!email || !password) {
-      setFormError('Please enter both email and password.');
-      return;
-    }
-
-    try {
-      const result = await createUserWithEmailAndPassword(email, password);
-      if (!result) {
-        setFormError('Registration failed. Please try again.');
-        return;
-      }
-      addUserToFirestore(result.user);
-    } catch (error) {
-      setFormError('Registration failed. Please try again.');
-      console.error('Registration error:', error);
-      return;
-    }
+    const newUser = await register(email, password);
+    if (newUser) navigate('/dashboard');
   };
-
-  const addUserToFirestore = async (user: typeof auth.currentUser) => {
-    if (user) {
-      const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, {
-        email: user.email,
-        lastLogin: serverTimestamp(),
-        createdAt: serverTimestamp(),
-      });
-    }
-  }
 
   return (
     <div className="min-h-screen bg-brand text-brand flex items-start justify-start p-4 font-hacker text-lg">

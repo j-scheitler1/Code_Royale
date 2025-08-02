@@ -22,15 +22,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(firebaseUser);
       setLoading(false);
 
+      // JASON ADDED NEED TO INVESTIGATE
       if(firebaseUser){
-        const token = await firebaseUser.getIdToken();
-        await fetch("/api/sync-user", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        });
+        // const token = await firebaseUser.getIdToken();
+        // await fetch("/api/sync-user", {
+        //     method: "POST",
+        //     headers: {
+        //         Authorization: `Bearer ${token}`,
+        //         "Content-Type": "application/json",
+        //     },
+        // });
       }
     });
 
