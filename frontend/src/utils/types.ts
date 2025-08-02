@@ -20,3 +20,9 @@ export interface MatchResult {
   result: string; // "win", "lose", or "tie"
   timestamp: number;
 }
+
+export type UserMatchStats = {
+  wins: number,
+  losses: number,
+  ties: number,
+}

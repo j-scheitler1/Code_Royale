@@ -10,6 +10,7 @@ import TestProblemPage from "./pages/problem/TestProblemPage";
 import Loading from "./pages/Loading";
 import Game from "./pages/Game";
 import Outcome from "./pages/Outcome";
+import Profile from "./pages/Profile";
 import { useAuth } from "./pages/auth";
 import { RequireAuth } from "./pages/auth/RequireAuth";
 
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/testProblem" element={<TestProblemPage />} />
         <Route path="/outcome" element={<Outcome />} />
         <Route path='/game/:matchId' element={<Game />} />
+        <Route path='/profile' element={<Profile/>} />
       </Routes>
     </>
   );
