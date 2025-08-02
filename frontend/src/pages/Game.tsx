@@ -7,8 +7,6 @@ import { auth } from '../firebase/firebase';
 import { socket } from "@/utils/socket";
 import type { MatchState, MatchResult } from '../utils/types';
 
-      // players: [player1.userData.uid, player2.userData.uid],
-
 const Game: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,11 +29,13 @@ const Game: React.FC = () => {
   const passMatchToFireBaseHandler = async (result: MatchResult) => {
     submitMatchResult(result);
   };
-  
-  // Set up socket listeners for match events
+
   useEffect(() => {
     if (!state) return;
     const { matchId } = state;
+
+    socket.emit("join", matchId);
+
     const handleTimer = (newTime: number) => setTimer(newTime);
     const handleEnded = () => {
       const currentResult = matchResultRef.current;
@@ -43,11 +43,12 @@ const Game: React.FC = () => {
         passMatchToFireBaseHandler(currentResult);
       }
       navigate('/outcome', { state: currentResult });
+      socket.emit("delete_match", matchId);
     };
 
-    socket.emit("join", matchId);
     socket.on("timer_update", handleTimer);
-    socket.on("match_ended", handleEnded); 
+    socket.once("match_ended", handleEnded); 
+
     return () => {
       socket.off("timer_update", handleTimer);
       socket.off("match_ended", handleEnded);

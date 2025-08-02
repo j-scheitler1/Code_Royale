@@ -59,7 +59,6 @@ function startCountdown(io: Server, matchId: string) {
     console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
     io.to(matchId).emit("timer_update", current.timer);
 
-    // SENDS TIE TO GAME IF TIMER REACHES ZERO
     if (current.timer <= 0) {
       io.to(matchId).emit("match_ended");
       matches.delete(matchId);
