@@ -58,11 +58,14 @@ function Dashboard() {
   return (
     <div className="relative bg-brand min-h-screen">
       <div className="flex items-center">
-        <Link to="/" className="text-brand-secondary px-4 py-4">
+        <Link to="/" className="text-brand px-4 py-4">
           {'{ Home }'}
         </Link>
-        <Link to="/" onClick={handleLogout} className="text-brand-secondary py-4">
+        <Link to="/" onClick={handleLogout} className="text-brand py-4">
           {`{ Logout }`}
+        </Link>
+        <Link to="/profile" className="text-brand px-4 py-4">
+          {`{ Profile }`}
         </Link>
       </div>
 
