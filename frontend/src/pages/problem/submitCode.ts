@@ -30,7 +30,8 @@ export async function submitCode({
         },
       }
     );
-
+    console.log(response.data);
+    console.log(response.data.stdout)
     return response.data;
   } catch (error) {
     console.error('Judge0 error:', error);

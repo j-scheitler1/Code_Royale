@@ -3,7 +3,7 @@ import React from 'react';
 import Split from 'react-split';
 import ProblemDescription from './problemDescription/ProblemDescription';
 import Playground from './Editor/Playground';
-import type { Problem } from "../../../backend/src/types/problem";
+import type { Problem } from "../../../backend/src/types/types";
 
 type WorkspaceProps = {
   problem: Problem;
@@ -24,7 +24,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setIsWinner }) =
         <Playground 
           starterCode={problem.starterCode}
           testCases={problem.testCases}
-          judge0TestCase={problem.judge0TestCase.code}
+          judge0TestCase={problem.judge0TestCase}
           setIsWinner={setIsWinner}
           timer={timer}
         />

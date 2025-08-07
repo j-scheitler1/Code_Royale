@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Split from 'react-split'
 import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
@@ -9,18 +9,11 @@ import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import { cpp } from '@codemirror/lang-cpp';
 import { submitCode } from '../../pages/problem/submitCode';
+import { buildSubmissionCode, getHash } from '../../pages/problem/submissionCodeBuilder';
 
-import type { StarterCode } from '../../../../backend/src/types/problem';
+import type { StarterCode } from '../../../../backend/src/types/types';
 import type { TestCase } from '@/utils/problems/types/problem';
-
-/* 
-
-FIGURE OUT THE MAPPING FOR THE LANGUAGE TO THE
-ACTUAL STARTER CODE THAT GETS DISPLAYED ON THE SCREEN
-
-UNCOMMENT THE IMPORTS AND ADD THE OTHER LANGUAGE SUPPORTS
-
-*/
+import type { Judge0TestCase } from '../../../../backend/src/types/types';
 
 const JavaScript = [javascript()];
 const Python = [python()];
@@ -35,10 +28,12 @@ const CPlusPlusNumber = 51;
 type PlaygroundProps = {
   starterCode: StarterCode[];
   testCases: TestCase[];
-  judge0TestCase: string;
+  judge0TestCase: Judge0TestCase[];
   setIsWinner: (isWinner: boolean) => void;
   timer: number;
 };
+
+// REFACTOR TO USE THE TEST CASES ARRAY AND FIND THE CORRESPONDING ONE
 
 const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setIsWinner }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
@@ -48,56 +43,58 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
   const [languageExtension, setLanguageExtension] = useState(Python);
   
   const [startingCode, setStartingCode] = useState(starterCode?.[0].starterCode);
+  const [testCode, setTestCode] = useState(judge0TestCase?.[0].code);
 
   const [submitSelect, setSubmitSelect] = useState(false);
   const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
+
+  const hash = useRef<string | null>(null);
 
   // Change Language
   useEffect(() => {
     if (languageId == PythonNumber) {
       setLanguageExtension(Python);
-      setStartingCode(starterCode?.[0].starterCode)
+      setStartingCode(starterCode?.[0].starterCode);
+      setTestCode(judge0TestCase?.[0].code);
     }
     else if (languageId == JavaNumber) {
       setLanguageExtension(Java);
-      setStartingCode(starterCode?.[1].starterCode)
+      setStartingCode(starterCode?.[1].starterCode);
+      setTestCode(judge0TestCase?.[1].code);
     }
     else if (languageId == JavaScriptNumber) {
       setLanguageExtension(JavaScript);
-      setStartingCode(starterCode?.[2].starterCode)
+      setStartingCode(starterCode?.[2].starterCode);
+      setTestCode(judge0TestCase?.[2].code);
     }
     else if (languageId == CPlusPlusNumber) {
       setLanguageExtension(CPlusPlus);
-      setStartingCode(starterCode?.[3].starterCode)
+      setStartingCode(starterCode?.[3].starterCode);
+      setTestCode(judge0TestCase?.[3].code);
     }
   }, [languageId]);
 
-  const handleSubmitCode = async (code: string) => {
+  const handleSubmitCode = async (code: string | undefined) => {
     const result = await submitCode({
       source_code: code ?? "",
       language_id: languageId,
     });
-    console.log('Submission Result:', result.stdout);
-    if (result.stdout.includes('ALL TESTS PASSED')) {
+    if (result.stdout.includes(hash.current)) {
       setIsWinner(true);
     }
   }
 
   // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
+  // REFACTOR TO BUILD TEMPORARY SUBMISSION EVERY TIME AND NOT RE-ADD TESTS
+
+  // Send Code with Test Cases to the submissionCode Builder -> Get Payload and Call handleSubmitCode
   useEffect(() => {
     if (!submitSelect) return;
-
-    let tempSubmissionCode = 'from typing import List\n';
-    tempSubmissionCode += submissionCode;
-    tempSubmissionCode += judge0TestCase;
-    setSubmissionCode(tempSubmissionCode);
-
-    
-    console.log('Submission Code: \n' + tempSubmissionCode);
-    
-    handleSubmitCode(tempSubmissionCode);
+    hash.current = getHash();
+    const finalSubmission = buildSubmissionCode(submissionCode, testCode, languageId, hash.current);
+    console.log(finalSubmission);
+    handleSubmitCode(finalSubmission);
     setSubmitSelect(false);
-  
   }, [submitSelect])
 
   return (

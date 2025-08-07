@@ -13,6 +13,7 @@ export interface TestCase {
 }
 
 export interface Judge0TestCase {
+  languageId: number,
   code : string;
 }
 
@@ -29,7 +30,7 @@ export interface Problem {
   testCases: TestCase[];
   constraints: string;
   starterCode: StarterCode[];
-  judge0TestCase: Judge0TestCase;
+  judge0TestCase: Judge0TestCase[];
 }
 
 export interface UserData {
