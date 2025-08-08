@@ -59,8 +59,16 @@ export const problems: Problem[] = [
     ],
     testCases: [
       {
-        input: '[2, 7, 11, 15],9',
-        output: '[0,1]',
+        input: '[2, 7, 11, 15], 9',
+        output: '[0,1] or [0, 1]',
+      },
+      {
+        input: '[3, 2, 4], 6',
+        output: '[1, 2] or [2, 1]',
+      },
+      {
+        input: '[3, 3], 6',
+        output: '[0, 1], [1, 0]',
       },
     ],
     constraints: 'Each input has exactly one solution.',

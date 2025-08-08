@@ -48,6 +48,8 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
   const [submitSelect, setSubmitSelect] = useState(false);
   const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
 
+  const [showTestCases, setShowTestCases] = useState(true);
+
   const hash = useRef<string | null>(null);
 
   // Change Language
@@ -82,6 +84,7 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     if (result.stdout.includes(hash.current)) {
       setIsWinner(true);
     }
+    // IF NOT WINNER SWITCH TEST CASES DIV TO OUTPUT DIV AND DISPLAY THE ERROR
   }
 
   // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
@@ -97,6 +100,11 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     setSubmitSelect(false);
   }, [submitSelect])
 
+  const setTest = () => {
+    const bool = !showTestCases;
+    setShowTestCases(bool);
+  }
+
   return (
     <div className="flex flex-col bg-brand">
       <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect} timer={timer}/>
@@ -111,35 +119,52 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
           />
         </div>
 
-        <div className="w-full h-full bg-brand-secondary text-white p-4 overflow-auto">
-          <h2 className="text-brand mb-2">Test Cases</h2>
-
-          {/* Test Case Buttons */}
-          <div className='flex flex-row gap-4 overflow-x-auto'>
-            {testCases?.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveTestCaseIndex(index)}
-                className={`font-medium items-center transition-all focus:outline-none inline-flex 
-                  ${activeTestCaseIndex === index ? 'bg-brand-secondary' : 'bg-brand'} 
-                  hover:bg-brand-secondary relative rounded-lg px-4 py-1 
-                  cursor-pointer whitespace-nowrap border border-white`}
-              >
-                case {index + 1}
-              </button>
-            ))}
-          </div>
-
-          {/* Selected Test Case Display */}
-          {activeTestCase && (
-            <div className='font-semibold'>
-              <p className='text-sm font-medium mt-4 text-brand-secondary'>Input:</p>
-              <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-brand border-transparent text-white mt-2'>
-                {activeTestCase.input}
+        <div className="w-full h-full bg-brand-secondary text-white p-4">
+          {showTestCases ? (
+            <div className="h-full flex flex-col overflow-hidden">
+              <div className="flex text-brand mb-4">
+                <button onClick={() => setShowTestCases(true)}>{`{ Test Cases }`}</button>
+                <button className="px-4" onClick={() => setShowTestCases(false)}>{`{ Output }`}</button>
               </div>
-              <p className='text-sm font-medium mt-4 text-brand-secondary'>Output:</p>
-              <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-brand border-transparent text-white mt-2'>
-                {activeTestCase.output}
+
+              <div className='flex flex-row gap-4 overflow-x-auto'>
+                {testCases?.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTestCaseIndex(index)}
+                    className={`font-medium items-center transition-all focus:outline-none inline-flex 
+                      ${activeTestCaseIndex === index ? 'bg-brand-secondary' : 'bg-brand'} 
+                      hover:bg-brand-secondary relative rounded-lg px-4 py-1 
+                      cursor-pointer whitespace-nowrap border border-white`}
+                  >
+                    case {index + 1}
+                  </button>
+                ))}
+              </div>
+
+              {activeTestCase && (
+                <div className='flex-1 overflow-y-auto mt-4 font-semibold'>
+                  <p className='text-sm font-medium text-brand-secondary'>Input:</p>
+                  <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-brand border-transparent text-white mt-2'>
+                    {activeTestCase.input}
+                  </div>
+                  <p className='text-sm font-medium mt-4 text-brand-secondary'>Output:</p>
+                  <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-brand border-transparent text-white mt-2'>
+                    {activeTestCase.output}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="h-full flex flex-col overflow-hidden">
+              <div className="flex text-brand mb-4">
+                <button onClick={() => setShowTestCases(true)}>{`{ Test Cases }`}</button>
+                <button className="px-4" onClick={() => setShowTestCases(false)}>{`{ Output }`}</button>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <div className="bg-brand">
+                  Hey
+                </div>
               </div>
             </div>
           )}
