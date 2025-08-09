@@ -49,12 +49,18 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId
         {formatTime(timer)}
       </div>
 
-      <div className="flex flex-1 justify-end items-center bg-brand p-1 pr-8">
+      <div className="flex flex-1 justify-end items-center bg-brand p-1 pr-4">
         <button
-          className="hover:text-green-500 text-brand transition-colors"
+          className="hover:font-bold text-brand transition-colors"
           onClick={handleSubmit}
         >
-          Submit
+          {`{ Submit }`}
+        </button>
+        <button
+          className="hover:font-bold text-brand px-4 transition-colors"
+          onClick={handleSubmit}
+        >
+          {`{ Leave Game }`}
         </button>
       </div>
     </div>

@@ -23,7 +23,7 @@ const CPlusPlus = [cpp()];
 const JavaScriptNumber = 63;
 const PythonNumber = 71;
 const JavaNumber = 62;
-const CPlusPlusNumber = 51;
+const CPlusPlusNumber = 54;
 
 type PlaygroundProps = {
   starterCode: StarterCode[];
@@ -49,6 +49,8 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
   const [submissionCode, setSubmissionCode] = useState(starterCode?.[0].starterCode);
 
   const [showTestCases, setShowTestCases] = useState(true);
+
+  const [output, setOutput] = useState<string>("");
 
   const hash = useRef<string | null>(null);
 
@@ -83,6 +85,9 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     });
     if (result.stdout.includes(hash.current)) {
       setIsWinner(true);
+    } else {
+      setOutput(result.stdout);
+      setShowTestCases(false);
     }
     // IF NOT WINNER SWITCH TEST CASES DIV TO OUTPUT DIV AND DISPLAY THE ERROR
   }
@@ -99,11 +104,6 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
     handleSubmitCode(finalSubmission);
     setSubmitSelect(false);
   }, [submitSelect])
-
-  const setTest = () => {
-    const bool = !showTestCases;
-    setShowTestCases(bool);
-  }
 
   return (
     <div className="flex flex-col bg-brand">
@@ -123,7 +123,7 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
           {showTestCases ? (
             <div className="h-full flex flex-col overflow-hidden">
               <div className="flex text-brand mb-4">
-                <button onClick={() => setShowTestCases(true)}>{`{ Test Cases }`}</button>
+                <button className="font-bold" onClick={() => setShowTestCases(true)}>{`{ Test Cases }`}</button>
                 <button className="px-4" onClick={() => setShowTestCases(false)}>{`{ Output }`}</button>
               </div>
 
@@ -159,11 +159,13 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
             <div className="h-full flex flex-col overflow-hidden">
               <div className="flex text-brand mb-4">
                 <button onClick={() => setShowTestCases(true)}>{`{ Test Cases }`}</button>
-                <button className="px-4" onClick={() => setShowTestCases(false)}>{`{ Output }`}</button>
+                <button className="font-bold px-4" onClick={() => setShowTestCases(false)}>{`{ Output }`}</button>
               </div>
               <div className="flex-1 overflow-y-auto">
-                <div className="bg-brand">
-                  Hey
+                <div className="bg-brand px-2">
+                  <p className='text-brand px-2'>
+                    { output }
+                  </p>
                 </div>
               </div>
             </div>
