@@ -1,9 +1,9 @@
-import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../utils/socket";
 import { useState, useEffect } from "react"; 
-import { Link } from "react-router-dom";
+import Header from '../components/header_layout';
+// import { Link } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -13,11 +13,6 @@ function Dashboard() {
   useEffect(() => {
     setShowMatchButton(true);
   }, []);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    navigate("/login");
-  };
 
   const handleJumpToMatch = () => {
     if(!user) {
@@ -55,39 +50,36 @@ function Dashboard() {
 
   }
 
-  return (
-    <div className="relative bg-brand min-h-screen">
-      <div className="flex items-center">
-        <Link to="/" className="text-brand px-4 py-4">
-          {'{ Home }'}
-        </Link>
-        <Link to="/" onClick={handleLogout} className="text-brand py-4">
-          {`{ Logout }`}
-        </Link>
-        <Link to="/profile" className="text-brand px-4 py-4">
-          {`{ Profile }`}
-        </Link>
+return (
+  <div className="bg-brand h-screen overflow-hidden grid grid-rows-[auto,1fr]">
+    {/* HEADER (single row, no extra wrappers) */}
+    <header className="flex items-center p-2">
+      <div className="ml-2">
+        <Header />
       </div>
+    </header>
 
-      <div className="flex flex-col items-center justify-center min-h-screen text-brand">
-        <div className="text-xlg font-bold">
+    {/* CENTERED MAIN */}
+    <main className="flex items-center justify-center text-brand">
+      <div className="text-center">
+        <div className="text-xl font-bold">
           {user ? `Welcome, ${user.email}` : "No user logged in"}
         </div>
-        {showMatchButton && (
-          <div>
-            <button onClick={handleJumpToMatch}>
-              {'{ Jump into a match }'}
-            </button>
-          </div>
-        )}
-        {!showMatchButton && (
-          <div className="text-brand-secondary">
-            Finding a Match...
-          </div> 
+
+        {showMatchButton ? (
+          <button
+            onClick={handleJumpToMatch}
+            className="mt-2 inline-block transition duration-200 origin-left hover:scale-105"
+          >
+            {"{ Jump into a match }"}
+          </button>
+        ) : (
+          <div className="mt-2 text-brand-secondary">Finding a Match...</div>
         )}
       </div>
-    </div>
-  );
+    </main>
+  </div>
+);
 }
 
 export default Dashboard;

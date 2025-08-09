@@ -1,4 +1,4 @@
-import type { Problem } from "../../../backend/src/types/problem";
+import type { Problem } from "../../../backend/src/types/types";
 
 export interface Player {
   uid: string;

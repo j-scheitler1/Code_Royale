@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { getQueue } from "./queue";
 import { getRandomProblem } from "../data/problems";
-import { Match, UserData } from "../types/problem";
+import { Match, UserData } from "../types/types";
 import { Server } from "socket.io";
 
 const matches = new Map<string, Match>();

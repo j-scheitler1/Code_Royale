@@ -6,7 +6,6 @@ import About from "./pages/About";
 import Register from "./pages/Register"; 
 import Dashboard from "./pages/Dashboard";
 // import ProblemPage from "./pages/problem/ProblemPage";
-import TestProblemPage from "./pages/problem/TestProblemPage";
 import Loading from "./pages/Loading";
 import Game from "./pages/Game";
 import Outcome from "./pages/Outcome";
@@ -35,11 +34,23 @@ const App = () => {
             </RequireAuth>
           }
         />
-        {/* ADD AUTH BACK WHEN DONE WITH BRANCH */}
-        <Route path="/testProblem" element={<TestProblemPage />} />
+        
+        {/* If no outcome -> redirect to home */}
         <Route path="/outcome" element={<Outcome />} />
-        <Route path='/game/:matchId' element={<Game />} />
-        <Route path='/profile' element={<Profile/>} />
+        
+        <Route path='/game/:matchId' element={
+          <RequireAuth>
+            <Game />
+          </RequireAuth>
+          } 
+        />
+        
+        <Route path='/profile' element={
+          <RequireAuth>
+            <Profile/>
+          </RequireAuth>
+          } 
+        />
       </Routes>
     </>
   );

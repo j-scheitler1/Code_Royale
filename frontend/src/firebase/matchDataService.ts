@@ -13,7 +13,7 @@ export async function getWinsAndLosses(userId: string): Promise<UserMatchStats> 
     where('playerId', '==', uid)
   );
   const lossesQ = query(matches, 
-    where('result', '==', 'loss'),
+    where('result', '==', 'win'),
     where('opponentId', '==', uid)
   );
   const tiesQ = query(matches,
