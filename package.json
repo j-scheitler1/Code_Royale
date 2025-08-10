@@ -1,4 +1,7 @@
 {
+  "name": "code_royale",
+  "private": true,
+  "workspaces": ["backend", "frontend", "packages/*"],
   "dependencies": {
     "react-toastify": "^11.0.5"
   }

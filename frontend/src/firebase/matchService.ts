@@ -1,8 +1,8 @@
-import { db } from "./firebase";
-import type { MatchResult } from "../utils/types";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from './firebase';
+import type { MatchResult } from '../utils/types';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-export const submitMatchResult = async (result: MatchResult): Promise<void> => {
+export async function submitMatchResult(result: MatchResult): Promise<void> {
   try {
     const matchRef = doc(db, 'matches', result.matchId);
     await setDoc(matchRef, {

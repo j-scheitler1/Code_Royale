@@ -1,4 +1,4 @@
-import type { Problem } from "../../../backend/src/types/types";
+import type { Problem } from '@coderoyale/shared-types/src';
 
 export interface Player {
   uid: string;

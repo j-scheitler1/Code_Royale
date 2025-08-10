@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import React from 'react';
-
 type ProblemDescriptionProps = {
   title?: string;
   problemStatement?: string;

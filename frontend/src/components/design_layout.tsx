@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Design: React.FC = () => {
   return (
     <div className="text-brand text-center font-mono whitespace-pre mt-10 text-xl sm:text-base select-none">

@@ -1,17 +1,15 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { RequireAuth } from "./pages/auth/RequireAuth";
+import { useAuth } from "./pages/auth";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import About from "./pages/About"; 
 import Register from "./pages/Register"; 
 import Dashboard from "./pages/Dashboard";
-// import ProblemPage from "./pages/problem/ProblemPage";
 import Loading from "./pages/Loading";
 import Game from "./pages/Game";
 import Outcome from "./pages/Outcome";
 import Profile from "./pages/Profile";
-import { useAuth } from "./pages/auth";
-import { RequireAuth } from "./pages/auth/RequireAuth";
 
 
 const App = () => {

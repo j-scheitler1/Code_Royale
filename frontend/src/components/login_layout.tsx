@@ -1,6 +1,6 @@
-import React, { useEffect, useState }  from 'react';
-import { useLogin } from '../firebase/userService';
+import { useEffect, useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from '@/firebase/userService';
 
 const Login_Layout: React.FC = () => {
   const [email, setEmail] = useState('');

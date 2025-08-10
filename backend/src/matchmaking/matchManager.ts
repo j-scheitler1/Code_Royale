@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { getQueue } from "./queue";
-import { getRandomProblem } from "../data/problems";
-import { Match, UserData } from "../types/types";
 import { Server } from "socket.io";
+import { getRandomProblem } from "@data/problems";
+import { Match } from '@/types/types';
+import { getQueue } from "./queue";
 
 const matches = new Map<string, Match>();
 

@@ -1,6 +1,6 @@
-import { auth, db } from './firebase';
+import { auth, db } from '@/firebase/firebase';
 import { collection, query, where, getCountFromServer, or, and } from 'firebase/firestore';
-import type { UserMatchStats } from '../utils/types';
+import type { UserMatchStats } from '@/utils/types';
 
 export async function getWinsAndLosses(userId: string): Promise<UserMatchStats> {
   const uid = userId ?? auth.currentUser?.uid;

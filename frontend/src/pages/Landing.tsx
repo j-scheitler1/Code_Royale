@@ -1,9 +1,7 @@
-import React from 'react';
-import Header from '../components/header_layout';
-import Design from '../components/design_layout';
-// import ReactDOM from 'react-dom/client';
+import Header from '@/components/header_layout';
+import Design from '@/components/design_layout';
 
-function Landing() {
+const Landing: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-brand">

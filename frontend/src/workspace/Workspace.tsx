@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import React from 'react';
 import Split from 'react-split';
 import ProblemDescription from './problemDescription/ProblemDescription';
 import Playground from './Editor/Playground';
-import type { Problem } from "../../../backend/src/types/types";
+import type { Problem } from '@coderoyale/shared-types/src';
 
 type WorkspaceProps = {
   problem: Problem;

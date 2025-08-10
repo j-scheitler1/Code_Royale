@@ -26,8 +26,8 @@ import java.util.regex.*;
 import java.util.stream.*;
 `;
 const CPlusPlusImports = `
-  #include <bits/stdc++.h>
-  using namespace std;
+#include <bits/stdc++.h>
+using namespace std;
 `;
 export function buildSubmissionCode(userCode: string, testCode: string, languageId: number, hash: string) {
   testCode = addHash(testCode, hash);

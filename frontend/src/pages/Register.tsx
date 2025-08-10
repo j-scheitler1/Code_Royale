@@ -1,7 +1,6 @@
-import React from 'react';
-import Header from '../components/header_layout';
-import Register_Layout from '../components/register_layout';
-import { RedirectIfAuth } from './auth/RedirectIfAuth';
+import Header from '@/components/header_layout';
+import Register_Layout from '@/components/register_layout';
+import { RedirectIfAuth } from '@/pages/auth/RedirectIfAuth';
 
 const Register: React.FC = () => {
   return (

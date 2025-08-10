@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { auth, db } from './firebase';
 import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth, db } from '@/firebase/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { browserLocalPersistence, type User, setPersistence } from 'firebase/auth';
 
