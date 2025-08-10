@@ -1,19 +1,27 @@
 import { languageOptions } from '@/utils/languages';
+import { useState } from 'react';
 
 type PreferenceNavProps = {
   languageId: number;
+  setOutcome: (outcome: string) => void;
   setLanguageId: (id: number) => void;
   setSubmitSelect: (id: boolean) => void;
   timer: number;
 }
 
-const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId, setSubmitSelect, timer }) => {
+const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setOutcome, setLanguageId, setSubmitSelect, timer }) => {
+  const [leaveModal, setLeaveModal] = useState(false);
+
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguageId(Number(e.target.value));
   };
 
   const handleSubmit = () => {
     setSubmitSelect(true);
+  }
+
+  const handleEnded = (outcome: string) => {
+    setOutcome(outcome);
   }
 
   const formatTime = (seconds: number) => {
@@ -40,10 +48,7 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId
             </option>
           ))}
         </select>
-      </div>
-
-      <div className="absolute left-1/2 -translate-x-1/2 flex items-center text-brand">
-        <span className="mr-2">Time Remaining</span>
+        <span className="ml-4 mr-2">Time Remaining</span>
         {formatTime(timer)}
       </div>
 
@@ -54,12 +59,30 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ languageId, setLanguageId
         >
           {`{ Submit }`}
         </button>
-        <button
-          className="hover:font-bold text-brand px-4 transition-colors"
-          onClick={handleSubmit}
-        >
-          {`{ Leave Game }`}
-        </button>
+        {!leaveModal && (
+          <button
+            className="hover:font-bold text-brand px-4 transition-colors"
+            onClick={() => setLeaveModal(true)}
+          >
+            {`{ Leave Game }`}
+          </button>
+        )}
+        {leaveModal && (
+          <>
+            <button
+              className="hover:font-bold text-brand px-4 transition-colors"
+              onClick={() => {handleEnded('loss')}}
+            >
+              {`{ Exit Game }`}
+            </button>
+            <button
+              className="hover:font-bold text-brand transition-colors"
+              onClick={() => setLeaveModal(false)}
+            >
+              {`{ Cancel }`}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

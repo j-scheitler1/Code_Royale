@@ -6,10 +6,10 @@ import type { Problem } from '@coderoyale/shared-types/src';
 type WorkspaceProps = {
   problem: Problem;
   timer: number;
-  setIsWinner: (isWinner: boolean) => void;
+  setOutcome: (outcome: string) => void;
 };
 
-const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setIsWinner }) => {
+const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setOutcome}) => {
   return (
     <div className="h-screen">
       <Split className="split h-full" minSize={0}>
@@ -23,7 +23,7 @@ const Workspace: React.FC<WorkspaceProps> = ({ problem , timer, setIsWinner }) =
           starterCode={problem.starterCode}
           testCases={problem.testCases}
           judge0TestCase={problem.judge0TestCase}
-          setIsWinner={setIsWinner}
+          setOutcome={setOutcome}
           timer={timer}
         />
       </Split>
