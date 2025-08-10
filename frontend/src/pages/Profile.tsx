@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { auth } from "../firebase/firebase";
-import type { UserMatchStats } from '../utils/types';
-import { getWinsAndLosses } from '../firebase/matchDataService'
-import Header from '../components/header_layout';
+import { useState, useEffect } from 'react';
+import { auth } from "@/firebase/firebase";
+import type { UserMatchStats } from '@/utils/types';
+import { getWinsAndLosses } from '@/firebase/matchDataService'
+import Header from '@/components/header_layout';
 
-const Profile:React.FC = () => {
+const Profile: React.FC = () => {
   const user = auth.currentUser;
   const [matchData, setMatchData] = useState<UserMatchStats | null>(null);
   const totalMatches = matchData ? (matchData.wins + matchData.losses + matchData.ties) : 0;
   const winPercentage = matchData ? ((matchData.wins / totalMatches) * 100) : 0.00;
   
-  React.useEffect(() => {
+  useEffect(() => {
     if (user?.uid) {
       getWinsAndLosses(user.uid).then(setMatchData).catch(console.error);
     }

@@ -1,4 +1,4 @@
-import { Problem } from "../types/types";
+import { Problem } from '@coderoyale/shared-types/src';
 
 /*
   Format is the following

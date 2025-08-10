@@ -1,6 +1,4 @@
-import React from 'react';
-import { languageOptions } from './languages';
-// import { submitCode } from '../../../pages/problem/submitCode';
+import { languageOptions } from '@/utils/languages';
 
 type PreferenceNavProps = {
   languageId: number;

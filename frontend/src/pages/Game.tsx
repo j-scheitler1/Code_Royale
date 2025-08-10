@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import Workspace from '../workspace/Workspace';
-import { submitMatchResult } from '../firebase/matchService'
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { auth } from '../firebase/firebase';
-import { socket } from "@/utils/socket";
-import type { MatchState, MatchResult } from '../utils/types';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Workspace from '@/workspace/Workspace';
+import type { MatchState, MatchResult } from '@/utils/types';
+import { submitMatchResult } from '@/firebase/matchService';
+import { auth } from '@/firebase/firebase';
+import { socket } from '@/utils/socket';
 
 const Game: React.FC = () => {
   const location = useLocation();
@@ -21,7 +20,7 @@ const Game: React.FC = () => {
     matchId: state.matchId,
     playerId: state.player1 === currentPlayerId ? state.player1 : state.player2,
     opponentId: state.player1 === currentPlayerId ? state.player2 : state.player1,
-    result: "loss",
+    result: 'loss',
     timestamp: Date.now(),
   });
   const matchResultRef = useRef<MatchResult>(matchResult);
@@ -34,24 +33,24 @@ const Game: React.FC = () => {
     if (!state) return;
     const { matchId } = state;
 
-    socket.emit("join", matchId);
+    socket.emit('join', matchId);
 
     const handleTimer = (newTime: number) => setTimer(newTime);
     const handleEnded = () => {
       const currentResult = matchResultRef.current;
-      if (currentResult.result === "win") {
+      if (currentResult.result === 'win') {
         passMatchToFireBaseHandler(currentResult);
       }
       navigate('/outcome', { state: currentResult });
-      socket.emit("delete_match", matchId);
+      socket.emit('delete_match', matchId);
     };
 
-    socket.on("timer_update", handleTimer);
-    socket.once("match_ended", handleEnded); 
+    socket.on('timer_update', handleTimer);
+    socket.once('match_ended', handleEnded); 
 
     return () => {
-      socket.off("timer_update", handleTimer);
-      socket.off("match_ended", handleEnded);
+      socket.off('timer_update', handleTimer);
+      socket.off('match_ended', handleEnded);
     };
 
   }, [state, navigate]);
@@ -60,13 +59,13 @@ const Game: React.FC = () => {
     if (isWinner) {
       const updatedResult = {
         ...matchResultRef.current,
-        result: "win",
+        result: 'win',
         timestamp: Date.now(),
       };
 
       setMatchResult(updatedResult);
       matchResultRef.current = updatedResult;
-      socket.emit("player_won", matchId);
+      socket.emit('player_won', matchId);
     }
   }, [isWinner]);
 

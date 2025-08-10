@@ -1,19 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Split from 'react-split'
 import PreferenceNav from './preferenceNav/PreferenceNav';
 import CodeMirror from "@uiw/react-codemirror"
-import { useState } from 'react';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import { cpp } from '@codemirror/lang-cpp';
-import { submitCode } from '../../pages/problem/submitCode';
-import { buildSubmissionCode, getHash } from '../../pages/problem/submissionCodeBuilder';
-
-import type { StarterCode } from '../../../../backend/src/types/types';
-import type { TestCase } from '@/utils/problems/types/problem';
-import type { Judge0TestCase } from '../../../../backend/src/types/types';
+import { submitCode } from '@/pages/problem/submitCode';
+import { buildSubmissionCode, getHash } from '@/pages/problem/submissionCodeBuilder';
+import type { StarterCode } from '@coderoyale/shared-types/src';
+import type { TestCase } from '@coderoyale/shared-types/src';
+import type { Judge0TestCase } from '@coderoyale/shared-types/src';
 
 const JavaScript = [javascript()];
 const Python = [python()];
@@ -32,8 +30,6 @@ type PlaygroundProps = {
   setIsWinner: (isWinner: boolean) => void;
   timer: number;
 };
-
-// REFACTOR TO USE THE TEST CASES ARRAY AND FIND THE CORRESPONDING ONE
 
 const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setIsWinner }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
@@ -89,11 +85,7 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
       setOutput(result.stdout);
       setShowTestCases(false);
     }
-    // IF NOT WINNER SWITCH TEST CASES DIV TO OUTPUT DIV AND DISPLAY THE ERROR
   }
-
-  // BUG - FIRST TIME SUBMITTING CODE THE TEST CASES DO NOT GET ADDED TO SUBMISSION CODE
-  // REFACTOR TO BUILD TEMPORARY SUBMISSION EVERY TIME AND NOT RE-ADD TESTS
 
   // Send Code with Test Cases to the submissionCode Builder -> Get Payload and Call handleSubmitCode
   useEffect(() => {
