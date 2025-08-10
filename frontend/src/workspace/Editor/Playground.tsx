@@ -27,11 +27,11 @@ type PlaygroundProps = {
   starterCode: StarterCode[];
   testCases: TestCase[];
   judge0TestCase: Judge0TestCase[];
-  setIsWinner: (isWinner: boolean) => void;
+  setOutcome: (outcome: string) => void;
   timer: number;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setIsWinner }) => {
+const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0TestCase, timer, setOutcome }) => {
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0); 
   const activeTestCase = testCases?.[activeTestCaseIndex];
   
@@ -80,26 +80,25 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
       language_id: languageId,
     });
     if (result.stdout.includes(hash.current)) {
-      setIsWinner(true);
+      setOutcome('win');
     } else {
       setOutput(result.stdout);
       setShowTestCases(false);
     }
   }
 
-  // Send Code with Test Cases to the submissionCode Builder -> Get Payload and Call handleSubmitCode
   useEffect(() => {
     if (!submitSelect) return;
     hash.current = getHash();
     const finalSubmission = buildSubmissionCode(submissionCode, testCode, languageId, hash.current);
-    console.log(finalSubmission);
+
     handleSubmitCode(finalSubmission);
     setSubmitSelect(false);
   }, [submitSelect])
 
   return (
     <div className="flex flex-col bg-brand">
-      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setSubmitSelect={setSubmitSelect} timer={timer}/>
+      <PreferenceNav languageId={languageId} setLanguageId={setLanguageId} setOutcome={setOutcome} setSubmitSelect={setSubmitSelect} timer={timer}/>
       <Split className='h-[calc(100vh-94px)]' direction="vertical" sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto bg-brand-editor'>
           <CodeMirror 

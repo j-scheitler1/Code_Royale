@@ -14,7 +14,7 @@ const Game: React.FC = () => {
   const matchId = state.matchId;
   const currentPlayerId = auth.currentUser?.uid;
   const [timer, setTimer] = useState<number>(initialTimer);
-  const [isWinner, setIsWinner] = useState<boolean>(false);
+  const [outcome, setOutcome] = useState<string>('in progress');
 
   const [matchResult, setMatchResult] = useState<MatchResult>({
     matchId: state.matchId,
@@ -56,18 +56,28 @@ const Game: React.FC = () => {
   }, [state, navigate]);
 
   useEffect(() => {
-    if (isWinner) {
-      const updatedResult = {
+    let updatedResult;
+    if (outcome == 'win') {
+      updatedResult = {
         ...matchResultRef.current,
         result: 'win',
         timestamp: Date.now(),
       };
-
       setMatchResult(updatedResult);
       matchResultRef.current = updatedResult;
       socket.emit('player_won', matchId);
     }
-  }, [isWinner]);
+    else if (outcome == 'loss') {
+      updatedResult = {
+        ...matchResultRef.current,
+        result: 'loss',
+        timestamp: Date.now(),
+      };
+      setMatchResult(updatedResult);
+      matchResultRef.current = updatedResult;
+      socket.emit('player_won', matchId);
+    }
+  }, [outcome]);
 
   useEffect(() => {
     matchResultRef.current = matchResult;
@@ -80,7 +90,7 @@ const Game: React.FC = () => {
   
   return (
     <div>
-      <Workspace problem={problem} timer={timer} setIsWinner={setIsWinner} />
+      <Workspace problem={problem} timer={timer} setOutcome={setOutcome} />
     </div>
   );
 };
