@@ -13,7 +13,7 @@ export async function submitCode({
   stdin?: string;
 }) {
   try {
-    console.log('sending code: ', source_code);
+    // console.log('sending code: ', source_code);
     const response = await axios.post(
       `${API_URL}?base64_encoded=false&wait=true`,
       {

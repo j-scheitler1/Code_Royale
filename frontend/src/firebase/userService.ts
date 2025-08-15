@@ -44,7 +44,7 @@ export const useRegister = () => {
   useEffect(() => {
     if (!firebaseError) return;
     const code = firebaseError.code;
-    console.log(firebaseError.code);
+    // console.log(firebaseError.code);
     const message = FIREBASE_REGISTER_ERROR_MAP[code] ?? 'Something went wrong. Please try again.';
     setFormError(message)
   }, [firebaseError]);

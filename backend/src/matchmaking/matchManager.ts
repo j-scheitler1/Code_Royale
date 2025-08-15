@@ -15,20 +15,20 @@ export function createMatchIfPossible(io: Server) {
   const problem = getRandomProblem();
   const matchId = uuidv4();
   
-  console.log(`Creating match ${matchId} between ${player1.userData.email} and ${player2.userData.email}`);
+  // console.log(`Creating match ${matchId} between ${player1.userData.email} and ${player2.userData.email}`);
 
   const match: Match = {
     players: [player1.userData, player2.userData],
     sockets: [player1.socket, player2.socket],
     problem: problem,
-    timer: 50000000, // 30 minutes in seconds
+    timer: 1200, // 30 minutes in seconds
   };
 
   matches.set(matchId, match);
   
-  console.log(`Match ${matchId} created with problem: ${problem.title}`);
-  console.log("Backend Player 1", player1.userData.uid);
-  console.log("Backend Player 2", player2.userData.uid);
+  // console.log(`Match ${matchId} created with problem: ${problem.title}`);
+  // console.log("Backend Player 1", player1.userData.uid);
+  // console.log("Backend Player 2", player2.userData.uid);
 
   [player1.socket, player2.socket].forEach((socket, i) => {
     socket.join(matchId);
@@ -56,7 +56,7 @@ function startCountdown(io: Server, matchId: string) {
     }
 
     current.timer--;
-    console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
+    // console.log(`Match ${matchId} timer: ${current.timer}s remaining`);
     io.to(matchId).emit("timer_update", current.timer);
 
     if (current.timer <= 0) {
@@ -70,6 +70,6 @@ function startCountdown(io: Server, matchId: string) {
 export function deleteMatch(matchId: string) {
   if (matches.has(matchId)) {
     matches.delete(matchId);
-    console.log(`Match ${matchId} deleted`);
+    // console.log(`Match ${matchId} deleted`);
   }
 }
