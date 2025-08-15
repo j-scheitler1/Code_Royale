@@ -13,8 +13,7 @@ export async function submitCode({
   stdin?: string;
 }) {
   try {
-    console.log(API_URL);
-    console.log("Source Code sending \n" + source_code)
+    console.log('sending code: ', source_code);
     const response = await axios.post(
       `${API_URL}?base64_encoded=false&wait=true`,
       {
@@ -30,11 +29,31 @@ export async function submitCode({
         },
       }
     );
-    console.log(response.data);
-    console.log(response.data.stdout)
-    return response.data;
-  } catch (error) {
-    console.error('Judge0 error:', error);
-    throw error;
+
+    const data = response.data;
+    let output = '';
+
+    if (data.stdout) {
+      output = data.stdout;
+    } else if (data.stderr) {
+      output = data.stderr;
+    } else if (data.compile_output) {
+      output = data.compile_output;
+    } else {
+      output = data.status?.description || 'Unknown error';
+    }
+
+    return {
+      status: data.status?.description || 'Unknown',
+      output: output.trim(),
+      raw: data,
+    };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return {
+      status: 'API Error',
+      output: error.message || 'Unknown error',
+      raw: error,
+    };
   }
 }

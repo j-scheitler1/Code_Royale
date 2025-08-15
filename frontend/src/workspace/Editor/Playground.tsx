@@ -79,13 +79,13 @@ const Playground: React.FC<PlaygroundProps> = ({ starterCode, testCases, judge0T
       source_code: code ?? "",
       language_id: languageId,
     });
-    if (result.stdout.includes(hash.current)) {
-      setOutcome('win');
+    if (result.output && result.output.includes(hash.current)) {
+      setOutcome("win");
     } else {
-      setOutput(result.stdout);
+      setOutput(result.output || "No output received.");
       setShowTestCases(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (!submitSelect) return;

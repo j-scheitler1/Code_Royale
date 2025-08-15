@@ -75,25 +75,68 @@ export const problems: Problem[] = [
     starterCode: [
       {
         languageId: 71, // Python
-        starterCode: 'class Solution:\n  def twoSum(self, nums: List[int], target: int) -> List[int]:'
+        starterCode: `class Solution:
+  def twoSum(self, nums: List[int], target: int) -> List[int]:`
       },
       {
         languageId: 62, // Java
-        starterCode: 'class Solution {\n  public int[] twoSum(int[] nums, int target) { \n\n  } \n}'
+        starterCode: `class Solution {  
+  public int[] twoSum(int[] nums, int target) { 
+            
+  }
+}`
       },
       {
         languageId: 63, // JavaScript
-        starterCode: 'class Solution {\n  /**\n  * @param {number[]} nums\n  * @param {number} target\n  * @return {number[]}\n  */\n  twoSum(nums, target) {\n \n  }\n}'
+        starterCode: `class Solution {
+  /**  
+  * @param {number[]} nums 
+  * @param {number} target
+  * @return {number[]}
+  */  
+  twoSum(nums, target) {
+          
+  }
+}`
       },
       {
         languageId: 51, // C++
-        starterCode: 'class Solution {\npublic: \n  vector<int> twoSum(vector<int>& nums, int target) { \n  \n\n  } \n}'
+        starterCode: `class Solution {
+public: 
+  vector<int> twoSum(vector<int>& nums, int target) { 
+            
+  }
+};`
       },
     ],
     judge0TestCase: [
       {
         languageId: 71, // Python
-        code: `\ndef run_tests():\n    sol = Solution()\n    try:\n        result1 = sol.twoSum([2, 7, 11, 15], 9)\n        if result1 not in ([0, 1], [1, 0]):\n            print("Wrong answer with the following input: [2, 7, 11, 15], 9\\nExpected [0, 1] or [1, 0] but received:", result1)\n            return\n\n        result2 = sol.twoSum([3, 2, 4], 6)\n        if result2 not in ([1, 2], [2, 1]):\n            print("Wrong answer with the following input: [3, 2, 4], 6\\nExpected [1, 2] or [2, 1] but received:", result2)\n            return\n\n        result3 = sol.twoSum([3, 3], 6)\n        if result3 not in ([0, 1], [1, 0]):\n            print("Wrong answer with the following input: [3, 3], 6\\nExpected [0, 1] or [1, 0] but received:", result3)\n            return\n\n        print("HASHHERE")\n    except Exception as e:\n        print("ERROR:", e)\n\nif __name__ == "__main__":\n    run_tests()\n`,
+        code: `def run_tests():
+            sol = Solution()
+            try:
+                result1 = sol.twoSum([2, 7, 11, 15], 9)
+                if result1 not in ([0, 1], [1, 0]):
+                    print("Wrong answer with the following input: [2, 7, 11, 15], 9\nExpected [0, 1] or [1, 0] but received:", result1)
+                    return
+
+                result2 = sol.twoSum([3, 2, 4], 6)
+                if result2 not in ([1, 2], [2, 1]):
+                    print("Wrong answer with the following input: [3, 2, 4], 6\nExpected [1, 2] or [2, 1] but received:", result2)
+                    return
+
+                result3 = sol.twoSum([3, 3], 6)
+                if result3 not in ([0, 1], [1, 0]):
+                    print("Wrong answer with the following input: [3, 3], 6\nExpected [0, 1] or [1, 0] but received:", result3)
+                    return
+
+                print("HASHHERE")
+            except Exception as e:
+                print("ERROR:", e)
+
+
+        if __name__ == "__main__":
+            run_tests()`,
       },
       {
         languageId: 62, // Java
