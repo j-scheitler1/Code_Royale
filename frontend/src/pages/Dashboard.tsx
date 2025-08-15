@@ -15,25 +15,25 @@ const Dashboard: React.FC = () => {
 
   const handleJumpToMatch = () => {
     if(!user) {
-      console.log('No user logged in');
+      // console.log('No user logged in');
       return;
     }
 
     setShowMatchButton(false);
-    console.log('Jumping into match...');
+    // console.log('Jumping into match...');
     const userData = {
       uid: user.uid,
       username: user.email || 'Anonymous',
     }
 
-    console.log('User Data:', userData);
+    // console.log('User Data:', userData);
     socket.emit('join_queue', {
       uid: userData.uid,
       username: userData.username,
     });
 
     socket.on('match_found', (match) => {
-      console.log('Match found:', match);
+      // console.log('Match found:', match);
 
       navigate(`/game/${match.matchId}`, {
         state: {
