@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { UserData } from "@/types/types";
+import { UserData } from "../types/types";
 import { addToQueue, removeFromQueue } from "./queue";
 import { createMatchIfPossible, deleteMatch } from "./matchManager";
 

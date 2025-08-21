@@ -1,5 +1,5 @@
 import express from 'express';
-import { getRandomProblem } from '@data/problems';
+import { getRandomProblem } from '../data/problems';
 
 const router = express.Router();
 
